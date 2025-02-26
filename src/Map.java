@@ -17,7 +17,7 @@ public class Map {
                 list.add(text);
             }
         } catch (IOException e) {
-
+//djfkslj;
         }
         return list;
     }
