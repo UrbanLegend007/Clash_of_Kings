@@ -2,6 +2,7 @@ package World;
 
 import Commands.Command;
 import Commands.Exit;
+import Commands.Help;
 import Commands.Travel;
 
 import java.io.BufferedReader;
@@ -33,6 +34,7 @@ public class CommandManager {
     private void inicializace(){
         command = new HashMap<>();
         command.put("exit", new Exit());
+        command.put("help", new Help());
         command.put("travel", new Travel(this));
 
     }
@@ -46,7 +48,7 @@ public class CommandManager {
 
     private void runCommand(){
         System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
-        System.out.println("Commands: travel, exit");
+        System.out.println("Commands: travel, help, exit");
         System.out.println("\nEnter command: ");
         System.out.print("-> ");
         String prikaz = s.next().toLowerCase();
