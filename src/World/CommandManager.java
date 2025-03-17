@@ -32,6 +32,7 @@ public class CommandManager {
         command = new HashMap<>();
         command.put("exit", new Exit());
         command.put("help", new Help());
+        command.put("talk", new Talk(this));
         command.put("get", new Get(this));
         command.put("travel", new Travel(this));
 
