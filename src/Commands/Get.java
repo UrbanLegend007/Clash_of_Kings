@@ -49,7 +49,7 @@ public class Get extends Command{
         int availableAmount = currentKingdom.getResources().getOrDefault(request, 0);
 
         if (offerValue*amount >= requiredValue && availableAmount > 0) {
-            currentKingdom.collectResource(request, availableAmount);
+            currentKingdom.collectItems(request, availableAmount, "items");
             return "Offer accepted. You traded all " + offeredItem + ".\nYou have collected all " + availableAmount + " " + request + ".";
         } else if(availableAmount <= 0){
             return "No " + request + " available in this kingdom.";
