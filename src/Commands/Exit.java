@@ -3,7 +3,7 @@ package Commands;
 public class Exit extends Command {
     @Override
     public String execute() {
-        return "Game over";
+        return "Game over.";
     }
 
     @Override

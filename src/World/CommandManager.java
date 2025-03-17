@@ -1,9 +1,6 @@
 package World;
 
-import Commands.Command;
-import Commands.Exit;
-import Commands.Help;
-import Commands.Travel;
+import Commands.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,16 +14,16 @@ public class CommandManager {
     private Scanner s = new Scanner(System.in);
     private boolean exit = false;
     private HashMap<String, Command> command;
-    private HashMap<Integer, Kingdom> world = new HashMap<>();
+    public HashMap<Integer, Kingdom> world = new HashMap<>();
     private HashMap<String, Integer> nameToId = new HashMap<>();
     private int start = 1;
-    private int currentPosition = start;
+    public int currentPosition = start;
 
     public CommandManager(){
         if (loadWorld()) {
-            System.out.println("Map successfully loaded");
+            System.out.println("Map successfully loaded.");
         } else {
-            System.out.println("Error loading map");
+            System.out.println("Error loading map.");
         }
         start();
     }
@@ -35,6 +32,7 @@ public class CommandManager {
         command = new HashMap<>();
         command.put("exit", new Exit());
         command.put("help", new Help());
+        command.put("get", new Get(this));
         command.put("travel", new Travel(this));
 
     }
@@ -48,7 +46,7 @@ public class CommandManager {
 
     private void runCommand(){
         System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
-        System.out.println("Commands: travel, help, exit");
+        System.out.println("Commands: travel, help, get, exit");
         System.out.println("\nEnter command: ");
         System.out.print("-> ");
         String prikaz = s.next().toLowerCase();
@@ -57,7 +55,7 @@ public class CommandManager {
             System.out.println(command.get(prikaz).execute());
             exit = command.get(prikaz).exit();
         } else {
-            System.out.println("Invalid command");
+            System.out.println("Invalid command.");
         }
     }
 
@@ -65,7 +63,7 @@ public class CommandManager {
         Kingdom currentKingdom = world.get(currentPosition);
 
         if (currentKingdom == null) {
-            System.out.println("Error: Unknown location");
+            System.out.println("Error: Unknown location.");
             return;
         }
 
@@ -99,7 +97,7 @@ public class CommandManager {
 
     public String travelTo(String destination) {
         if (!nameToId.containsKey(destination)) {
-            return "Misspelled kingdom";
+            return "Misspelled kingdom.";
         }
 
         int targetId = nameToId.get(destination);
@@ -107,9 +105,9 @@ public class CommandManager {
 
         if (current.getBorders().contains(targetId)) {
             currentPosition = targetId;
-            return "You traveled to " + world.get(targetId).getName();
+            return "You traveled to " + world.get(targetId).getName() + ".";
         } else {
-            return "You cannot travel to " + world.get(targetId).getName();
+            return "You cannot travel to " + world.get(targetId).getName() + ".";
         }
     }
 }
