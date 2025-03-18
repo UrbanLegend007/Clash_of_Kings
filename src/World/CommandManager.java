@@ -1,6 +1,7 @@
 package World;
 
 import Commands.*;
+import Commands.Army;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -34,6 +35,7 @@ public class CommandManager {
         command.put("help", new Help());
         command.put("talk", new Talk(this));
         command.put("use", new Use(this));
+        command.put("army", new Army(this));
         command.put("negotiation", new Negotiation(this));
         command.put("maintain", new Maintain(this));
         command.put("trade", new Trade(this));
@@ -51,7 +53,7 @@ public class CommandManager {
 
     private void runCommand(){
         System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
-        System.out.println("Commands: travel, help, get, trade, talk, use, negotiation, maintain, exit");
+        System.out.println("Commands: travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
         System.out.println("\nEnter command: ");
         System.out.print("-> ");
         String prikaz = s.next().toLowerCase();
