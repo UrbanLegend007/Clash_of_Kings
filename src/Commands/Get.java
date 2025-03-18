@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Get extends Command{
 
     private CommandManager worldCommandManager;
+    private Inventory inventory = new Inventory();
     Scanner scanner = new Scanner(System.in);
     private static final HashMap<String, Integer> itemValues = new HashMap<>();
 
@@ -50,7 +51,35 @@ public class Get extends Command{
 
         if (offerValue*amount >= requiredValue && availableAmount > 0) {
             currentKingdom.collectItems(request, availableAmount, "items");
-            return "Offer accepted. You traded all " + offeredItem + ".\nYou have collected all " + availableAmount + " " + request + ".";
+            switch(offeredItem){
+                case "resources":
+                    inventory.removeItem(1, amount);
+                    break;
+                case "scrolls":
+                    inventory.removeItem(2, amount);
+                    break;
+                case "metals":
+                    inventory.removeItem(3, amount);
+                    break;
+                case "krystals":
+                    inventory.removeItem(4, amount);
+                    break;
+            }
+            switch(request){
+                case "resources":
+                    inventory.addItem(1, availableAmount);
+                    break;
+                case "scrolls":
+                    inventory.addItem(2, availableAmount);
+                    break;
+                case "metals":
+                    inventory.addItem(3, availableAmount);
+                    break;
+                case "krystals":
+                    inventory.addItem(4, availableAmount);
+                    break;
+            }
+            return "Offer accepted. You traded " + amount + " " + offeredItem + ".\nYou have collected all " + availableAmount + " " + request + ".";
         } else if(availableAmount <= 0){
             return "No " + request + " available in this kingdom.";
         } else {

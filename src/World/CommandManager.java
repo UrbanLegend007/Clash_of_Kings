@@ -19,6 +19,7 @@ public class CommandManager {
     private HashMap<String, Integer> nameToId = new HashMap<>();
     private int start = 1;
     public int currentPosition = start;
+    Inventory inventory = new Inventory();
 
     public CommandManager(){
         if (loadWorld()) {
@@ -32,6 +33,7 @@ public class CommandManager {
     private void inicializace(){
         command = new HashMap<>();
         command.put("exit", new Exit());
+        command.put("inventory", new Inventory());
         command.put("help", new Help());
         command.put("talk", new Talk(this));
         command.put("use", new Use(this));

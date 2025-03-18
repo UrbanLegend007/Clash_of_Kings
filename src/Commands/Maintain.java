@@ -9,6 +9,7 @@ public class Maintain extends Command {
 
     private CommandManager worldCommandManager;
     Scanner scanner = new Scanner(System.in);
+    private Inventory inventory = new Inventory();
 
     public Maintain(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
@@ -22,30 +23,27 @@ public class Maintain extends Command {
         String request = scanner.nextLine();
 
         if(request.equals("1") || request.equals("gear")){
-            System.out.print("Enter metal you want to use to maintain: \n1) gold \n2) silver \n3) bronze\n");
-            String metal = scanner.nextLine();
-
-            if(metal.equals("1") || metal.equals("gold")){
-                return "You maintained gear with gold.";
-            }else if(metal.equals("2") || metal.equals("silver")){
-                return "You maintained gear with silver.";
-            }else if(metal.equals("3") || metal.equals("bronze")){
-                return "You maintained gear with bronze.";
+            System.out.print("Enter amount of metals you want to use to maintain: \n");
+            int metal = scanner.nextInt();
+            if(metal > 0 && metal <= inventory.getResourceAmount(3)){
+                inventory.removeItem(3, metal);
+                return "You maintained gears for your army with " + metal + " metals.";
+            }else if(metal > inventory.getResourceAmount(3)){
+                return "Not enough metals for maintaining gear.";
             }else{
-                return "Invalid input.";
+                return "Invalid amount of metals.";
             }
-        }else if(request.equals("2") || request.equals("properties")){
-            System.out.print("Enter resource you want to use to maintain: \n1) resource \n2) potion \n3) krystal\n");
-            String resource = scanner.nextLine();
 
-            if(resource.equals("1") || resource.equals("resource")){
-                return "You maintained properties with resource.";
-            }else if(resource.equals("2") || resource.equals("potion")){
-                return "You maintained properties with potion.";
-            }else if(resource.equals("3") || resource.equals("krystal")){
-                return "You maintained properties with krystal.";
+        }else if(request.equals("2") || request.equals("properties")){
+            System.out.print("Enter amount of resources you want to use to maintain: \n");
+            int resources = scanner.nextInt();
+            if(resources > 0 && resources <= inventory.getResourceAmount(1)){
+                inventory.removeItem(1, resources);
+                return "You maintained properties of your army with " + resources + " resources.";
+            }else if(resources > inventory.getResourceAmount(1)){
+                return "Not enough resources for maintaining properties.";
             }else{
-                return "Invalid input.";
+                return "Invalid amount of resources.";
             }
         }else{
             return "Invalid input.";
