@@ -33,6 +33,7 @@ public class CommandManager {
         command.put("exit", new Exit());
         command.put("help", new Help());
         command.put("talk", new Talk(this));
+        command.put("use", new Use(this));
         command.put("negotiation", new Negotiation(this));
         command.put("maintain", new Maintain(this));
         command.put("trade", new Trade(this));
@@ -50,7 +51,7 @@ public class CommandManager {
 
     private void runCommand(){
         System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
-        System.out.println("Commands: travel, help, get, trade, talk, negotiation, maintain, exit");
+        System.out.println("Commands: travel, help, get, trade, talk, use, negotiation, maintain, exit");
         System.out.println("\nEnter command: ");
         System.out.print("-> ");
         String prikaz = s.next().toLowerCase();
