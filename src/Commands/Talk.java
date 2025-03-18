@@ -14,7 +14,7 @@ public class Talk extends Command{
     @Override
     public String execute() {
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
-        return "Dialog, ktery obsahuje informace o " + currentKingdom.getName() + " a jeho situaci (dopisu pozdeji).";
+        return currentKingdom.getDialog(worldCommandManager.currentPosition);
     }
 
     @Override

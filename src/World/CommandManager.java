@@ -90,10 +90,16 @@ public class CommandManager {
             String text;
             while ((text = br.readLine()) != null) {
                 String[] line = text.split(",");
+                String[] borders = Arrays.copyOfRange(line, 2, line.length - 2);
+                String characterName = line[line.length - 2];
+                String conquered = line[line.length - 1];
+
                 Kingdom kingdom = new Kingdom(
                     line[1],
                     Integer.parseInt(line[0]),
-                    Arrays.copyOfRange(line, 2, line.length)
+                    borders,
+                    characterName,
+                    conquered
                 );
                 world.put(Integer.valueOf(line[0]), kingdom);
                 nameToId.put(line[1].toLowerCase(), kingdom.getID());
