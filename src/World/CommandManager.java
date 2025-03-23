@@ -1,7 +1,6 @@
 package World;
 
 import Commands.*;
-import Commands.Army;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,18 +13,20 @@ public class CommandManager {
 
     private Scanner s = new Scanner(System.in);
     private boolean exit = false;
+
     private HashMap<String, Command> command;
     public HashMap<Integer, Kingdom> world = new HashMap<>();
     private HashMap<String, Integer> nameToId = new HashMap<>();
+    private HashMap<Integer, Boolean> conqueredKingdoms = new HashMap<>();
+
     private int start = 1;
     public int currentPosition = start;
-    Inventory inventory = new Inventory();
 
     public CommandManager(){
         if (loadWorld()) {
-            System.out.println("Map successfully loaded.");
+            System.out.println("\nMap successfully loaded.");
         } else {
-            System.out.println("Error loading map.");
+            System.out.println("\nError loading map.");
         }
         start();
     }
@@ -43,7 +44,6 @@ public class CommandManager {
         command.put("trade", new Trade(this));
         command.put("get", new Get(this));
         command.put("travel", new Travel(this));
-
     }
 
     public void start(){
@@ -55,12 +55,14 @@ public class CommandManager {
 
     private void runCommand(){
         System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
-        System.out.println("Commands: travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
+        System.out.println("\nCommands: \n-> characters, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
         System.out.println("\nEnter command: ");
-        System.out.print("-> ");
+        System.out.print(" -> ");
         String prikaz = s.next().toLowerCase();
 
-        if (command.containsKey(prikaz)) {
+        if(prikaz.equals("characters")){
+            showCharacters();
+        }else if (command.containsKey(prikaz)) {
             System.out.println(command.get(prikaz).execute());
             exit = command.get(prikaz).exit();
         } else {
@@ -85,21 +87,44 @@ public class CommandManager {
         }
     }
 
+    public void showCharacters() {
+        Kingdom currentKingdom = world.get(currentPosition);
+
+        if (currentKingdom == null) {
+            System.out.println("Error: Unknown location.");
+            return;
+        }
+        System.out.println();
+        for (int kingdomID = 1; kingdomID <= 8; kingdomID++) {
+            Kingdom neighbor = world.get(kingdomID);
+            if (neighbor != null) {
+                System.out.println("--------------------------------------------------" + neighbor.character());
+            }
+        }
+        System.out.println("--------------------------------------------------");
+    }
+
+
+
     public boolean loadWorld() {
         try (BufferedReader br = new BufferedReader(new FileReader("src\\Map"))) {
             String text;
             while ((text = br.readLine()) != null) {
                 String[] line = text.split(",");
-                String[] borders = Arrays.copyOfRange(line, 2, line.length - 2);
-                String characterName = line[line.length - 2];
-                String conquered = line[line.length - 1];
+                String[] borders = Arrays.copyOfRange(line, 2, line.length - 4);
+                String conquered = line[line.length - 4];
+                String characterName = line[line.length - 3];
+                String loyalty = line[line.length - 2];
+                String battle = line[line.length - 1];
 
                 Kingdom kingdom = new Kingdom(
                     line[1],
                     Integer.parseInt(line[0]),
                     borders,
+                    conquered,
                     characterName,
-                    conquered
+                    loyalty,
+                    battle
                 );
                 world.put(Integer.valueOf(line[0]), kingdom);
                 nameToId.put(line[1].toLowerCase(), kingdom.getID());
@@ -110,9 +135,25 @@ public class CommandManager {
         }
     }
 
+    public boolean loadConqueredStatus() {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/conquered"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                int kingdomID = Integer.parseInt(parts[0]);
+                boolean isConquered = Boolean.parseBoolean(parts[1]);
+                conqueredKingdoms.put(kingdomID, isConquered);
+            }
+            return true;
+        } catch (IOException e) {
+            System.out.println("Error loading conquered kingdoms.");
+            return false;
+        }
+    }
+
     public String travelTo(String destination) {
         if (!nameToId.containsKey(destination)) {
-            return "Misspelled kingdom.";
+            return "\nMisspelled kingdom.";
         }
 
         int targetId = nameToId.get(destination);
@@ -120,9 +161,9 @@ public class CommandManager {
 
         if (current.getBorders().contains(targetId)) {
             currentPosition = targetId;
-            return "You traveled to " + world.get(targetId).getName() + ".";
+            return "\nYou traveled to " + world.get(targetId).getName() + ".";
         } else {
-            return "You cannot travel to " + world.get(targetId).getName() + ".";
+            return "\nYou cannot travel to " + world.get(targetId).getName() + ".";
         }
     }
 }

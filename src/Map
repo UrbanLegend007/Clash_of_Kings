@@ -1,8 +1,8 @@
-1,My kingdom,2,3,4,My character,conquered
-2,Shadow kingdom,1,3,5,Dark king,not conquered
-3,Copper kingdom,1,2,4,5,6,Arthur king,not conquered
-4,Forest kingdom,1,3,7,king,not conquered
-5,Northern kingdom,2,3,6,8,king,not conquered
-6,Sea kingdom,3,5,7,8,king,not conquered
-7,Sun-Desert kingdom,4,6,8,king,not conquered
-8,East kingdom,5,6,7,king,not conquered
+1,My kingdom,2,3,4,conquered,My character,10,Not Battling
+2,Shadow kingdom,1,3,5,not conquered,Dark king,5,Battling
+3,Copper kingdom,1,2,4,5,6,not conquered,Arthur king,5,Not Battling
+4,Forest kingdom,1,3,7,not conquered,Eddard king,5,Not Battling
+5,Northern kingdom,2,3,6,8,not conquered,Rob king,5,Not Battling
+6,Sea kingdom,3,5,7,8,not conquered,Jon king,5,Not Battling
+7,Sun-Desert kingdom,4,6,8,not conquered,Yellow king,5,Not Battling
+8,East kingdom,5,6,7,not conquered,Healthy king,5,Not Battling

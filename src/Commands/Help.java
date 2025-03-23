@@ -18,7 +18,7 @@ public class Help extends Command{
                 "\n\n-> Maintain = Muzes vylepsit armadu." +
                 "\n            -> Gear => Metal (vyberes kov, kterym chces vylepsit vybaveni, cim vzacnejsi, tim lepsi)." +
                 "\n            -> Properties => Resources (vyberes zdroje, kterymi chces vylepsit vlastnosti, cim vzacnejsi, tim lepsi)." +
-                "\n\n-> Control Army = Muzes ovladat armadu na bitevnim poli, nebo pouze na mape, aniz bys ty sam musel nekam chodit (obvykle v pripade valky)." +
+                "\n\n-> Control ClassArmy = Muzes ovladat armadu na bitevnim poli, nebo pouze na mape, aniz bys ty sam musel nekam chodit (obvykle v pripade valky)." +
                 "\n                -> Attack = Zautocis na armadu na bitevnim poli, tvoje armada bude odkrytejsi, ale rychlejsi a silnejsi." +
                 "\n                -> Defence = Budes branit uzemi a tvoje armada bude drzet pozice, nebude se prilis hybat, ale bude vice skryta." +
                 "\n                -> Reinforcements = Zavolas posili bud svoje vlastni armady, ktera se nachazi jinde, nebo nejakeho jineho kralovstvi, se kterym mas alience." +

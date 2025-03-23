@@ -19,7 +19,7 @@ public class Inventory extends Command {
 
     @Override
     public String execute() {
-        return "Your inventory:\n" + showInventory();
+        return "\n" + showInventory();
     }
 
     @Override
