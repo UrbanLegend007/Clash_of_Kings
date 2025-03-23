@@ -19,7 +19,7 @@ public class CommandManager {
     private HashMap<String, Integer> nameToId = new HashMap<>();
     private HashMap<Integer, Boolean> conqueredKingdoms = new HashMap<>();
 
-    private int start = 1;
+    public int start = 1;
     public int currentPosition = start;
 
     public CommandManager(){
