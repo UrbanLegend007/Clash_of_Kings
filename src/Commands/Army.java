@@ -13,6 +13,7 @@ public class Army extends Command {
     private Scanner scanner = new Scanner(System.in);
     private Map<String, Boolean> fortresses = new HashMap<>();
     private String command;
+    private String fortressName;
 
     public Army(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
@@ -45,48 +46,56 @@ public class Army extends Command {
 
     private String occupyFortress() {
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
+        Kingdom myKingdom = worldCommandManager.world.get(0);
 
         if (currentKingdom == null) {
-            return "Error: Unknown kingdom.";
+            return "\nError: Unknown kingdom.";
         }
 
-        System.out.print("Enter fortress number (1, 2, or 3): ");
+        System.out.println("\n1) Main Castle");
+        System.out.println("2) Iron Keep");
+        System.out.println("3) Armyhold");
+        System.out.print("Enter fortress number: ");
         int fortressNumber = scanner.nextInt();
+        scanner.nextLine();
 
         if (fortressNumber < 1 || fortressNumber > 3) {
-            return "Invalid fortress number.";
+            return "\nInvalid fortress number.";
         }
-
-        fortressNumber--;  // Adjust for 0-based index
+        fortressNumber--;
 
         if (currentKingdom.isFortressOccupied(fortressNumber)) {
-            return "This fortress has already been occupied.";
+            return "\nThis fortress has already been occupied.";
         }
-
-        // Obsazení hradu
         currentKingdom.setFortressOccupied(fortressNumber, true);
 
-        return "You have successfully occupied fortress " + fortressNumber + " in " + currentKingdom.getName() + ".";
+        switch (fortressNumber) {
+            case 0:
+                fortressName = "Main Castle";
+                break;
+            case 1:
+                fortressName = "Iron Keep";
+                break;
+            case 2:
+                fortressName = "Armyhold";
+                break;
+        }
+
+        if(currentKingdom.getArmySize()*3 > myKingdom.getArmySize()) {
+            currentKingdom.updateArmySize(((currentKingdom.getArmySize()*3)-myKingdom.getArmySize())/3);
+            myKingdom.updateArmySize(0);
+            return "\nYou have been defeated by " + currentKingdom.getName() + ".\n" + currentKingdom.getName() + " army has now " + currentKingdom.getArmySize() + " and your army has " + myKingdom.getArmySize();
+        }else if(currentKingdom.getArmySize()*3 < myKingdom.getArmySize()) {
+            currentKingdom.setFortressOccupied(fortressNumber, true);
+            currentKingdom.updateArmySize((0));
+            myKingdom.updateArmySize(myKingdom.getArmySize() - currentKingdom.getArmySize()*3);
+            return "\nYou occupied " + fortressName + " in " + currentKingdom.getName() + ".\n" + currentKingdom.getName() + " army has now " + currentKingdom.getArmySize() + " and your army has " + myKingdom.getArmySize();
+        }else{
+            currentKingdom.updateArmySize((0));
+            myKingdom.updateArmySize(0);
+            return "\nBoth armies have been defeated, but " + fortressName + " is still occupied by " + currentKingdom.getName() + ".";
+        }
     }
-
-//    private String occupyFortress() {
-//        System.out.println("\nFortresses: ");
-//        System.out.println(" - Main Castle");
-//        System.out.println(" - Iron Keep");
-//        System.out.println(" - Armyhold");
-//        System.out.print("\nEnter fortress name to occupy: ");
-//        String fortressName = scanner.nextLine().toLowerCase();
-//
-//        if (!fortresses.containsKey(fortressName)) {
-//            return "Fortress not found.";
-//        }
-//        if (fortresses.get(fortressName)) {
-//            return "This fortress is already occupied.";
-//        }
-//        fortresses.put(fortressName, true);
-//        return "You have successfully occupied " + fortressName + ".";
-//    }
-
     @Override
     public boolean exit() {
         return false;
