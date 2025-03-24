@@ -17,7 +17,6 @@ public class CommandManager {
     private HashMap<String, Command> command;
     public HashMap<Integer, Kingdom> world = new HashMap<>();
     private HashMap<String, Integer> nameToId = new HashMap<>();
-    private HashMap<Integer, Boolean> conqueredKingdoms = new HashMap<>();
 
     public int start = 1;
     public int currentPosition = start;
@@ -65,7 +64,7 @@ public class CommandManager {
         }else if (command.containsKey(prikaz)) {
             System.out.println(command.get(prikaz).execute());
             exit = command.get(prikaz).exit();
-        } else {
+        }else {
             System.out.println("Invalid command.");
         }
     }
@@ -104,8 +103,6 @@ public class CommandManager {
         System.out.println("--------------------------------------------------");
     }
 
-
-
     public boolean loadWorld() {
         try (BufferedReader br = new BufferedReader(new FileReader("src\\Map"))) {
             String text;
@@ -131,22 +128,6 @@ public class CommandManager {
             }
             return true;
         } catch (IOException e) {
-            return false;
-        }
-    }
-
-    public boolean loadConqueredStatus() {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/conquered"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                int kingdomID = Integer.parseInt(parts[0]);
-                boolean isConquered = Boolean.parseBoolean(parts[1]);
-                conqueredKingdoms.put(kingdomID, isConquered);
-            }
-            return true;
-        } catch (IOException e) {
-            System.out.println("Error loading conquered kingdoms.");
             return false;
         }
     }
