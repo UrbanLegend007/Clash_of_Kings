@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Use extends Command {
 
     private CommandManager worldCommandManager;
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
     private Inventory inventory = new Inventory();
 
     public Use(CommandManager worldCommandManager) {
@@ -19,14 +19,23 @@ public class Use extends Command {
     public String execute() {
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
 
-        System.out.println("Enter the amount of krystals you would like to use:");
-        int krystal = scanner.nextInt();
-        if(inventory.getResourceAmount(4) >= krystal){
-            inventory.removeItem(4, krystal);
-            return "You have used " + krystal + " krystals.";
-        }else{
-            return "You don't have enough krystals left";
+        String result = "";
+        try {
+            System.out.println("Enter the amount of krystals you would like to use:");
+            int krystal = scanner.nextInt();
+
+            if (inventory.getResourceAmount(4) >= krystal) {
+                inventory.removeItem(4, krystal);
+                result = "You have used " + krystal + " krystals.";
+            } else {
+                result = "You don't have enough krystals left";
+            }
+        } catch (Exception e) {
+            result = "Invalid input! Please enter a valid number.";
+        } finally {
+            scanner.close();
         }
+        return result;
     }
 
     @Override

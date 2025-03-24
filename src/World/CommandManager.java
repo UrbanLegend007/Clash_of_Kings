@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CommandManager {
@@ -70,7 +71,15 @@ public class CommandManager {
             System.out.println("\nCommands: \n-> characters, inventory, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
             System.out.println("\nEnter command: ");
             System.out.print(" -> ");
-            String prikaz = s.next().toLowerCase();
+            String prikaz = "";
+
+            try {
+                prikaz = s.nextLine().toLowerCase();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid command.");
+                s.next();
+                return;
+            }
 
             if(prikaz.equals("characters")){
                 showCharacters();
@@ -83,13 +92,9 @@ public class CommandManager {
         }else{
             System.out.println("\n\n-------------------------------------------------------------------" +
                     "\n\n                        Congratulations. \n                    You have WON this game. \n\n" +
-                    "-------------------------------------------------------------------");
+                    "-----------------------------------------------------------------------------------------------------------");
             exit = true;
         }
-    }
-
-    public boolean getWon(){
-        return won;
     }
 
     public void showBorders() {
@@ -154,19 +159,20 @@ public class CommandManager {
                 String battle = line[line.length - 1];
 
                 Kingdom kingdom = new Kingdom(
-                    line[1],
-                    Integer.parseInt(line[0]),
-                    borders,
-                    conquered,
-                    characterName,
-                    loyalty,
-                    battle
+                        line[1],
+                        Integer.parseInt(line[0]),
+                        borders,
+                        conquered,
+                        characterName,
+                        loyalty,
+                        battle
                 );
                 world.put(Integer.valueOf(line[0]), kingdom);
                 nameToId.put(line[1].toLowerCase(), kingdom.getID());
             }
             return true;
         } catch (IOException e) {
+            System.out.println("Error reading world data: " + e.getMessage());
             return false;
         }
     }

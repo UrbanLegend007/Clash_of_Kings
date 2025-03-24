@@ -14,11 +14,22 @@ public class Travel extends Command {
     public String execute() {
         worldCommandManager.showBorders();
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter name of the kingdom: ");
-        String destination = scanner.nextLine().toLowerCase();
+        String result = "";
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(System.in);
+            System.out.print("Enter name of the kingdom: ");
+            String destination = scanner.nextLine().toLowerCase();
 
-        return worldCommandManager.travelTo(destination);
+            result = worldCommandManager.travelTo(destination);
+        } catch (Exception e) {
+            result = "Invalid input! Please try again.";
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
+        }
+        return result;
     }
 
     @Override

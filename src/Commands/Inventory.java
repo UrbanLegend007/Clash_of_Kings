@@ -73,7 +73,7 @@ public class Inventory extends Command {
         if (currentAmount >= amount) {
             inventory.put(resourceType, currentAmount - amount);
             if (inventory.get(resourceType) == 0) {
-                inventory.remove(resourceType); // Odstraní položku, pokud je množství 0
+                inventory.remove(resourceType);
             }
             saveInventory(inventory);
             return true;
