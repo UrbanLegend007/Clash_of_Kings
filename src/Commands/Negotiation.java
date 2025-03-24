@@ -104,10 +104,6 @@ public class Negotiation extends Command {
             return "Invalid input type. Please enter a valid option.";
         } catch (Exception e) {
             return "An error occurred: " + e.getMessage();
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-            }
         }
     }
 

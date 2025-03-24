@@ -185,6 +185,10 @@ public class CommandManager {
         int targetId = nameToId.get(destination);
         Kingdom current = world.get(currentPosition);
 
+        if(targetId == 1){
+            current.setArmy(15000);
+        }
+
         if (current.getBorders().contains(targetId)) {
             currentPosition = targetId;
             return "\nYou traveled to " + world.get(targetId).getName() + ".";

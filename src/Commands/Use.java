@@ -32,8 +32,6 @@ public class Use extends Command {
             }
         } catch (Exception e) {
             result = "Invalid input! Please enter a valid number.";
-        } finally {
-            scanner.close();
         }
         return result;
     }

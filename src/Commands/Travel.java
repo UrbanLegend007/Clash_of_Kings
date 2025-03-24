@@ -24,10 +24,6 @@ public class Travel extends Command {
             result = worldCommandManager.travelTo(destination);
         } catch (Exception e) {
             result = "Invalid input! Please try again.";
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-            }
         }
         return result;
     }
