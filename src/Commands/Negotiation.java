@@ -24,6 +24,7 @@ public class Negotiation extends Command{
 
         if(request.equals("1") || request.equals("attack")){
             currentKingdom.setLoyalty(0);
+            currentKingdom.setBattle("Battling");
             return "You are attacking " + currentKingdom.getName() + ". All trading and aliences have been broken.";
         }else if(request.equals("2") || request.equals("peace terms")){
 
@@ -39,6 +40,8 @@ public class Negotiation extends Command{
                     if(offeredItem.equals("resources")){
                         if(inventory.getResourceAmount(1) >= 30){
                             inventory.removeItem(1, 30);
+                            currentKingdom.setLoyalty(5);
+                            currentKingdom.setBattle("Not Battling");
                             return "Your made peace with " + currentKingdom.getName() + ".\n You gave them 30 " + offeredItem + ".";
                         }else{
                             return "You don't have enough " + offeredItem + " left";
@@ -46,6 +49,8 @@ public class Negotiation extends Command{
                     }else if(offeredItem.equals("scrolls")){
                         if(inventory.getResourceAmount(2) >= 30){
                             inventory.removeItem(2, 30);
+                            currentKingdom.setLoyalty(5);
+                            currentKingdom.setBattle("Not Battling");
                             return "Your made peace with " + currentKingdom.getName() + ".\n You gave them 30 " + offeredItem + ".";
                         }else{
                             return "You don't have enough " + offeredItem + " left";
@@ -53,6 +58,8 @@ public class Negotiation extends Command{
                     }else if(offeredItem.equals("metals")){
                         if(inventory.getResourceAmount(3) >= 30){
                             inventory.removeItem(3, 30);
+                            currentKingdom.setLoyalty(5);
+                            currentKingdom.setBattle("Not Battling");
                             return "Your made peace with " + currentKingdom.getName() + ".\n You gave them 30 " + offeredItem + ".";
                         }else{
                             return "You don't have enough " + offeredItem + " left";
@@ -60,6 +67,8 @@ public class Negotiation extends Command{
                     }else if(offeredItem.equals("krystals")){
                         if(inventory.getResourceAmount(4) >= 30){
                             inventory.removeItem(4, 30);
+                            currentKingdom.setLoyalty(5);
+                            currentKingdom.setBattle("Not Battling");
                             return "Your made peace with " + currentKingdom.getName() + ".\n You gave them 30 " + offeredItem + ".";
                         }else{
                             return "You don't have enough " + offeredItem + " left";

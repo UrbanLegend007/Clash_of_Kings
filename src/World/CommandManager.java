@@ -14,6 +14,8 @@ public class CommandManager {
     private Scanner s = new Scanner(System.in);
     private boolean exit = false;
 
+    private boolean won = false;
+
     private HashMap<String, Command> command;
     public HashMap<Integer, Kingdom> world = new HashMap<>();
     private HashMap<String, Integer> nameToId = new HashMap<>();
@@ -53,20 +55,41 @@ public class CommandManager {
     }
 
     private void runCommand(){
-        System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
-        System.out.println("\nCommands: \n-> characters, inventory, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
-        System.out.println("\nEnter command: ");
-        System.out.print(" -> ");
-        String prikaz = s.next().toLowerCase();
-
-        if(prikaz.equals("characters")){
-            showCharacters();
-        }else if (command.containsKey(prikaz)) {
-            System.out.println(command.get(prikaz).execute());
-            exit = command.get(prikaz).exit();
-        }else {
-            System.out.println("Invalid command.");
+        int count = 0;
+        for (int i = 1; i <= 8; i++) {
+            Kingdom kingdom = world.get(i);
+            if(kingdom.isConquered().equals("conquered")){
+                count++;
+            }
         }
+        if(count == 8){
+            won = true;
+        }
+        if(!won){
+            System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
+            System.out.println("\nCommands: \n-> characters, inventory, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
+            System.out.println("\nEnter command: ");
+            System.out.print(" -> ");
+            String prikaz = s.next().toLowerCase();
+
+            if(prikaz.equals("characters")){
+                showCharacters();
+            }else if (command.containsKey(prikaz)) {
+                System.out.println(command.get(prikaz).execute());
+                exit = command.get(prikaz).exit();
+            }else {
+                System.out.println("Invalid command.");
+            }
+        }else{
+            System.out.println("\n\n-------------------------------------------------------------------" +
+                    "\n\n                        Congratulations. \n                    You have WON this game. \n\n" +
+                    "-------------------------------------------------------------------");
+            exit = true;
+        }
+    }
+
+    public boolean getWon(){
+        return won;
     }
 
     public void showBorders() {
