@@ -3,11 +3,9 @@ package Commands;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Inventory extends Command {
     private static final String INVENTORY_FILE = "src/inventory";
-    private Scanner scanner = new Scanner(System.in);
 
     private static final Map<Integer, String> resourceTypes = new HashMap<>();
     static {

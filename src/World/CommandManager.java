@@ -54,7 +54,7 @@ public class CommandManager {
 
     private void runCommand(){
         System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
-        System.out.println("\nCommands: \n-> characters, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
+        System.out.println("\nCommands: \n-> characters, inventory, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
         System.out.println("\nEnter command: ");
         System.out.print(" -> ");
         String prikaz = s.next().toLowerCase();
@@ -83,6 +83,22 @@ public class CommandManager {
             if (neighbor != null) {
                 System.out.println("- " + neighbor.getName());
             }
+        }
+    }
+
+    public boolean atWar(){
+        Kingdom currentKingdom = world.get(currentPosition);
+
+        if (currentKingdom == null) {
+            System.out.println("Error: Unknown location.");
+        }
+
+        if(currentKingdom.getBattle().equals("Not Battling")){
+            return false;
+        }else if(currentKingdom.getBattle().equals("Battling")){
+            return true;
+        }else{
+            return false;
         }
     }
 

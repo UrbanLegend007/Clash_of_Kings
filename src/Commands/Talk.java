@@ -14,6 +14,7 @@ public class Talk extends Command{
     @Override
     public String execute() {
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
+        currentKingdom.setLoyalty(1);
         return currentKingdom.getDialog(worldCommandManager.currentPosition);
     }
 

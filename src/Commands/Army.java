@@ -26,20 +26,26 @@ public class Army extends Command {
 
     @Override
     public String execute() {
-        do{
-            System.out.print("\nEnter command: \n1) attack \n2) defense \n3) exit\n-> ");
-            command = scanner.nextLine();
+        if(worldCommandManager.atWar()){
+            do{
+                System.out.print("\nEnter command: \n1) attack \n2) defense \n3) exit\n-> ");
+                command = scanner.nextLine();
 
-            if (command.equals("1") || command.equals("attack")) {
-                System.out.println(attackFortress());
-            } else if (command.equals("2") || command.equals("defense")) {
-                System.out.println(defenseFortress());
-            } else {
-                System.out.println("Invalid command");
-            }
-        }while(!(command.equals("3") || command.equals("exit")));
+                if (command.equals("1") || command.equals("attack")) {
+                    System.out.println(attackFortress());
+                } else if (command.equals("2") || command.equals("defense")) {
+                    System.out.println(defenseFortress());
+                }else if(command.equals("3") || command.equals("exit")){
+                    System.out.println();
+                }else {
+                    System.out.println("Invalid command");
+                }
+            }while(!(command.equals("3") || command.equals("exit")));
 
-        return "Exiting army.";
+            return "Exiting army.";
+        }else{
+            return "You are not at war.";
+        }
     }
 
     private String defenseFortress() {

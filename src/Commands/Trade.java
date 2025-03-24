@@ -29,34 +29,39 @@ public class Trade extends Command {
     public String execute() {
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
 
-        System.out.print("Enter item to trade (krystals, resources, scrolls, metals): ");
-        String request = scanner.nextLine();
+        if(worldCommandManager.atWar()){
+            return "\nYou are at war.\nYou cannot currently trade.";
+        }else {
+            System.out.print("Enter item to trade (krystals, resources, scrolls, metals): ");
+            String request = scanner.nextLine();
 
-        if (!currentKingdom.getResources().containsKey(request) || currentKingdom.getResources().get(request) == 0) {
-            return "This kingdom has no " + request + " to trade.";
-        }
+            if (!currentKingdom.getResources().containsKey(request) || currentKingdom.getResources().get(request) == 0) {
+                return "This kingdom has no " + request + " to trade.";
+            }
 
-        System.out.print("Enter what you offer (krystals, resources, scrolls, metals, help): ");
-        String offeredItem = scanner.nextLine();
+            System.out.print("Enter what you offer (krystals, resources, scrolls, metals, help): ");
+            String offeredItem = scanner.nextLine();
 
-        if (!itemValues.containsKey(offeredItem)) {
-            return "You can't trade with that item.";
-        }
+            if (!itemValues.containsKey(offeredItem)) {
+                return "You can't trade with that item.";
+            }
 
-        System.out.println("Enter the amount you would like to offer: ");
-        int amount = scanner.nextInt();
+            System.out.println("Enter the amount you would like to offer: ");
+            int amount = scanner.nextInt();
 
-        int offerValue = itemValues.get(offeredItem);
-        int requiredValue = getRequiredValue(request);
+            int offerValue = itemValues.get(offeredItem);
+            int requiredValue = getRequiredValue(request);
 
-        if (offerValue*amount >= requiredValue && kingItems > 0) {
-            items += kingItems;
-            kingItems = 0;
-            return "Offer accepted. You traded all " + offeredItem + ".\nYou have collected all " + kingItems + " " + request + " and now you have " + items + " items.";
-        } else if(kingItems <= 0){
-            return "No " + request + " available in this kingdom.";
-        } else {
-            return "Trade rejected. Your offer was too low.";
+            if (offerValue*amount >= requiredValue && kingItems > 0) {
+                items += kingItems;
+                kingItems = 0;
+                currentKingdom.setLoyalty(1);
+                return "Offer accepted. You traded all " + offeredItem + ".\nYou have collected all " + kingItems + " " + request + " and now you have " + items + " items.";
+            } else if(kingItems <= 0){
+                return "No " + request + " available in this kingdom.";
+            } else {
+                return "Trade rejected. Your offer was too low.";
+            }
         }
     }
 
