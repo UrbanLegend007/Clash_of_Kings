@@ -67,6 +67,7 @@ public class CommandManager {
             won = true;
         }
         if(!won){
+//            Kingdom kingdom = world.get(1);
             System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
             System.out.println("\nCommands: \n-> characters, inventory, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
             System.out.println("\nEnter command: ");
@@ -80,13 +81,12 @@ public class CommandManager {
                 s.next();
                 return;
             }
-
             if(prikaz.equals("characters")){
                 showCharacters();
-            }else if (command.containsKey(prikaz)) {
+            } else if (command.containsKey(prikaz)) {
                 System.out.println(command.get(prikaz).execute());
                 exit = command.get(prikaz).exit();
-            }else {
+            } else {
                 System.out.println("Invalid command.");
             }
         }else{
@@ -186,7 +186,7 @@ public class CommandManager {
         Kingdom current = world.get(currentPosition);
 
         if(targetId == 1){
-            current.setArmy(15000);
+//            current.setArmy();
         }
 
         if (current.getBorders().contains(targetId)) {
