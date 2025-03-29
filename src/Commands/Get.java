@@ -11,7 +11,7 @@ public class Get extends Command{
 
     private CommandManager worldCommandManager;
     private Inventory inventory = new Inventory();
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
     private static final HashMap<String, Integer> itemValues = new HashMap<>();
 
     public Get(CommandManager worldCommandManager) {
@@ -89,6 +89,8 @@ public class Get extends Command{
             }
         } catch (InputMismatchException e) {
             return "Invalid amount entered. Please enter a valid integer.";
+        } catch (Exception e) {
+            return "Error getting item.";
         }
     }
 

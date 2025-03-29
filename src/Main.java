@@ -3,12 +3,15 @@ import World.CommandManager;
 public class Main {
     public static void main(String[] args) {
 
-        new CommandManager();
+        try {
+            new CommandManager();
+        } catch (Exception e) {
+            System.out.println("Error loading the game.");
+        }
 
         /*
-        exeptions
         --vytvorit armadu a jeji pocet + nacitani armady na default
-        nova hra (nacteni default hodnot
+        --nova hra (nacteni default hodnot
         resources / items
         dialogy + rozhodovani pri dialogu
         ohlidat inventar a items a resources

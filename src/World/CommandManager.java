@@ -65,7 +65,6 @@ public class CommandManager {
             won = true;
         }
         if(!won){
-//            Kingdom kingdom = world.get(1);
             System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
             System.out.println("\nCommands: \n-> reset, characters, inventory, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
             System.out.println("\nEnter command: ");
@@ -74,7 +73,7 @@ public class CommandManager {
 
             try {
                 prikaz = s.nextLine().toLowerCase();
-            } catch (InputMismatchException e) {
+            } catch (Exception e){
                 System.out.println("Invalid input. Please enter a valid command.");
                 s.next();
                 return;
@@ -82,7 +81,18 @@ public class CommandManager {
             if(prikaz.equals("characters")){
                 showCharacters();
             } else if(prikaz.equals("reset")){
-                resetWorld();
+                System.out.println("\nDo you really want to reset the map? Y/N");
+                System.out.print(" -> ");
+                try {
+                    prikaz = s.nextLine().toLowerCase();
+                } catch (Exception e){
+                    System.out.println("Invalid input. Please enter a valid command.");
+                }
+                if(prikaz.equals("Y") || prikaz.equals("yes") || prikaz.equals("y")){
+                    resetWorld();
+                }else if(prikaz.equals("N") || prikaz.equals("no") || prikaz.equals("n")){
+                    System.out.println("World has not been reset.");
+                }
             } else if (command.containsKey(prikaz)) {
                 System.out.println(command.get(prikaz).execute());
                 exit = command.get(prikaz).exit();
@@ -171,8 +181,8 @@ public class CommandManager {
                 nameToId.put(line[1].toLowerCase(), kingdom.getID());
             }
             return true;
-        } catch (IOException e) {
-            System.out.println("Error reading world data: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error loading the world.");
             return false;
         }
     }

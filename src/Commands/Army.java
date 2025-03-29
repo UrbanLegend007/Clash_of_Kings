@@ -45,9 +45,7 @@ public class Army extends Command {
 
                 return "Exiting army.";
             } catch (Exception e) {
-                return "Error: " + e.getMessage();
-            } finally {
-                scanner.close();
+                return "Error with army.";
             }
         } else {
             return "You are not at war.";
@@ -90,7 +88,7 @@ public class Army extends Command {
                 return "\nYour army has defended.";
             }
         } catch (Exception e) {
-            return "Error while defending: " + e.getMessage();
+            return "Error while defending fortress.";
         }
     }
 
@@ -157,7 +155,7 @@ public class Army extends Command {
                 }
             }
         } catch (Exception e) {
-            return "Error while attacking: " + e.getMessage();
+            return "Error while attacking fortress.";
         }
     }
 

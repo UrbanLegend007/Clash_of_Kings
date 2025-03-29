@@ -37,23 +37,27 @@ public class Inventory extends Command {
                     inventory.put(resourceType, amount);
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Error loading inventory.");
         }
         return inventory;
     }
 
     public String showInventory() {
-        HashMap<Integer, Integer> inventory = loadInventory();
-        if (inventory.isEmpty()) {
-            return "Your inventory is empty.";
-        }
+        try{
+            HashMap<Integer, Integer> inventory = loadInventory();
+            if (inventory.isEmpty()) {
+                return "Your inventory is empty.";
+            }
 
-        StringBuilder sb = new StringBuilder("Your inventory:\n");
-        for (Integer key : inventory.keySet()) {
-            sb.append("- ").append(resourceTypes.get(key)).append(": ").append(inventory.get(key)).append("\n");
+            StringBuilder sb = new StringBuilder("Your inventory:\n");
+            for (Integer key : inventory.keySet()) {
+                sb.append("- ").append(resourceTypes.get(key)).append(": ").append(inventory.get(key)).append("\n");
+            }
+            return sb.toString();
+        } catch (Exception e){
+            return "Error getting inventory.";
         }
-        return sb.toString();
     }
 
     public int getResourceAmount(int resourceType) {
@@ -86,7 +90,7 @@ public class Inventory extends Command {
             for (Integer key : inventory.keySet()) {
                 bw.write(key + "," + inventory.get(key) + "\n");
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Error saving inventory.");
         }
     }
