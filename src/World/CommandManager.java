@@ -214,7 +214,7 @@ public class CommandManager {
             System.out.println("Error resetting world.");
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/myArmy"))){
-            bw.write("5000");
+            bw.write("2000");
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
@@ -262,15 +262,15 @@ public class CommandManager {
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/inventory"))){
-            bw.write("1,5000,5000,5000\n" +
-                    "2,5000,2500,2500\n" +
-                    "3,6000,2500,2500\n" +
-                    "4,6000,2000,2000\n" +
-                    "5,5000,2500,2500\n" +
-                    "6,3000,1500,1500\n" +
-                    "7,6000,2000,2000\n" +
-                    "8,5000,3000,3000");
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/Army"))){
+            bw.write("1,2000,2000,2000\n" +
+                    "2,5000,3000,3000\n" +
+                    "3,8500,4000,4000\n" +
+                    "4,11000,5000,6000\n" +
+                    "5,14000,7000,9000\n" +
+                    "6,23000,20000,15000\n" +
+                    "7,17000,15000,12000\n" +
+                    "8,20000,18000,13000");
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }

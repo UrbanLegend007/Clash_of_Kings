@@ -6,9 +6,8 @@ public class Main {
         new CommandManager();
 
         /*
-        metoda zabiti postavy
         exeptions
-        -vytvorit armadu a jeji pocet + nacitani armady na default
+        --vytvorit armadu a jeji pocet + nacitani armady na default
         nova hra (nacteni default hodnot
         resources / items
         dialogy + rozhodovani pri dialogu

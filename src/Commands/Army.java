@@ -171,7 +171,7 @@ public class Army extends Command {
         if (conquered) {
             getCurrentKingdom().setConquered("conquered");
             getMyKingdom().setMyArmy(1000);
-            System.out.println("\nYou have conquered the entire kingdom of " + getCurrentKingdom().getName() + "!\nYour army has been increased.");
+            System.out.println("\nYou have conquered the entire kingdom of " + getCurrentKingdom().getName() + "!\nYour army has been increased by 1000 soldiers.");
         }
     }
 
