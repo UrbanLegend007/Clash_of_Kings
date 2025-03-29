@@ -2,9 +2,7 @@ package World;
 
 import Commands.*;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -69,7 +67,7 @@ public class CommandManager {
         if(!won){
 //            Kingdom kingdom = world.get(1);
             System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
-            System.out.println("\nCommands: \n-> characters, inventory, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
+            System.out.println("\nCommands: \n-> reset, characters, inventory, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
             System.out.println("\nEnter command: ");
             System.out.print(" -> ");
             String prikaz = "";
@@ -83,6 +81,8 @@ public class CommandManager {
             }
             if(prikaz.equals("characters")){
                 showCharacters();
+            } else if(prikaz.equals("reset")){
+                resetWorld();
             } else if (command.containsKey(prikaz)) {
                 System.out.println(command.get(prikaz).execute());
                 exit = command.get(prikaz).exit();
@@ -184,17 +184,95 @@ public class CommandManager {
 
         int targetId = nameToId.get(destination);
         Kingdom current = world.get(currentPosition);
+        Kingdom myKingdom = world.get(1);
 
         if (current.getBorders().contains(targetId)) {
             currentPosition = targetId;
 
             if(currentPosition == 1){
-                current.setArmy(current.getMyArmy());
+                myKingdom.setArmy(myKingdom.getMyArmy());
                 System.out.println("\nYour army has been rebuilt.");
             }
             return "\nYou traveled to " + world.get(targetId).getName() + ".";
         } else {
             return "\nYou cannot travel to " + world.get(targetId).getName() + ".";
+        }
+    }
+
+    public void resetWorld() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/Map"))) {
+            bw.write("1,My kingdom,2,3,4,conquered,My character,10,Not Battling\n");
+            bw.write("2,Shadow kingdom,1,3,5,not conquered,Dark king,5,Not Battling\n");
+            bw.write("3,Copper kingdom,1,2,4,6,not conquered,Arthur king,5,Not Battling\n");
+            bw.write("4,Forest kingdom,1,3,7,not conquered,Eddard king,5,Not Battling\n");
+            bw.write("5,Northern kingdom,2,3,6,8,not conquered,Rob king,5,Not Battling\n");
+            bw.write("6,Sea kingdom,3,5,7,8,not conquered,Jon king,5,Not Battling\n");
+            bw.write("7,Sun-Desert kingdom,4,6,8,not conquered,Yellow king,5,Not Battling\n");
+            bw.write("8,East kingdom,5,6,7,not conquered,Healthy king,5,Not Battling\n");
+            System.out.println("\nThe world has been reset to its default state.");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/myArmy"))){
+            bw.write("5000");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/resources"))){
+            bw.write("1,100,50,120,70\n" +
+                    "2,80,40,0,60\n" +
+                    "3,120,0,70,35\n" +
+                    "4,100,50,30,70\n" +
+                    "5,80,40,25,60\n" +
+                    "6,120,60,35,90\n" +
+                    "7,100,50,30,70\n" +
+                    "8,80,40,25,60");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/items"))){
+            bw.write("1,100,50,30,70\n" +
+                    "2,80,40,30,60\n" +
+                    "3,120,40,30,35\n" +
+                    "4,100,50,30,70\n" +
+                    "5,80,40,25,60\n" +
+                    "6,120,60,35,90\n" +
+                    "7,100,50,30,70\n" +
+                    "8,80,40,25,60");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/inventory"))){
+            bw.write("1,30\n" +
+                    "2,210\n" +
+                    "3,50\n" +
+                    "4,50");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/fortress"))){
+            bw.write("1,true,true,true\n" +
+                    "2,false,false,false\n" +
+                    "3,false,false,false\n" +
+                    "4,false,false,false\n" +
+                    "5,false,false,false\n" +
+                    "6,false,false,false\n" +
+                    "7,false,false,false\n" +
+                    "8,false,false,false");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/inventory"))){
+            bw.write("1,5000,5000,5000\n" +
+                    "2,5000,2500,2500\n" +
+                    "3,6000,2500,2500\n" +
+                    "4,6000,2000,2000\n" +
+                    "5,5000,2500,2500\n" +
+                    "6,3000,1500,1500\n" +
+                    "7,6000,2000,2000\n" +
+                    "8,5000,3000,3000");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
         }
     }
 }
