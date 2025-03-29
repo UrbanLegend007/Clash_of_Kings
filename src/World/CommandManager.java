@@ -185,12 +185,13 @@ public class CommandManager {
         int targetId = nameToId.get(destination);
         Kingdom current = world.get(currentPosition);
 
-        if(targetId == 1){
-//            current.setArmy();
-        }
-
         if (current.getBorders().contains(targetId)) {
             currentPosition = targetId;
+
+            if(currentPosition == 1){
+                current.setArmy(current.getMyArmy());
+                System.out.println("\nYour army has been rebuilt.");
+            }
             return "\nYou traveled to " + world.get(targetId).getName() + ".";
         } else {
             return "\nYou cannot travel to " + world.get(targetId).getName() + ".";
