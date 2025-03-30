@@ -19,10 +19,10 @@ public class Get extends Command{
     }
 
     static {
-        itemValues.put("krystals", 30);
-        itemValues.put("resources", 15);
-        itemValues.put("scrolls", 35);
-        itemValues.put("metals", 20);
+        itemValues.put("krystals", 4);
+        itemValues.put("resources", 3);
+        itemValues.put("scrolls", 3);
+        itemValues.put("metals", 2);
     }
 
     @Override

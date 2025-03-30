@@ -37,7 +37,6 @@ public class CommandManager {
         command.put("inventory", new Inventory());
         command.put("help", new Help());
         command.put("talk", new Talk(this));
-        command.put("use", new Use(this));
         command.put("army", new Army(this));
         command.put("negotiation", new Negotiation(this));
         command.put("maintain", new Maintain(this));
@@ -66,7 +65,7 @@ public class CommandManager {
         }
         if(!won){
             System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
-            System.out.println("\nCommands: \n-> reset, characters, inventory, travel, help, get, trade, talk, use, army, negotiation, maintain, exit");
+            System.out.println("\nCommands: \n-> reset, characters, inventory, travel, help, get, trade, talk, army, negotiation, maintain, exit");
             System.out.println("\nEnter command: ");
             System.out.print(" -> ");
             String prikaz = "";
@@ -229,46 +228,46 @@ public class CommandManager {
             System.out.println("Error resetting world.");
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/resources"))){
-            bw.write("1,100,50,120,70\n" +
-                    "2,80,40,0,60\n" +
-                    "3,120,0,70,35\n" +
-                    "4,100,50,30,70\n" +
-                    "5,80,40,25,60\n" +
-                    "6,120,60,35,90\n" +
-                    "7,100,50,30,70\n" +
-                    "8,80,40,25,60");
+            bw.write("1,0,0,0,0\n" +
+                    "2,3,3,3,3\n" +
+                    "3,3,3,3,3\n" +
+                    "4,3,3,3,3\n" +
+                    "5,3,3,3,3\n" +
+                    "6,3,3,3,3\n" +
+                    "7,3,3,3,3\n" +
+                    "8,3,3,3,3");
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/items"))){
-            bw.write("1,100,50,30,70\n" +
-                    "2,80,40,30,60\n" +
-                    "3,120,40,30,35\n" +
-                    "4,100,50,30,70\n" +
-                    "5,80,40,25,60\n" +
-                    "6,120,60,35,90\n" +
-                    "7,100,50,30,70\n" +
-                    "8,80,40,25,60");
+            bw.write("1,0,0,0,0\n" +
+                    "2,3,3,3,3\n" +
+                    "3,3,3,3,3\n" +
+                    "4,3,3,3,3\n" +
+                    "5,3,3,3,3\n" +
+                    "6,3,3,3,3\n" +
+                    "7,3,3,3,3\n" +
+                    "8,3,3,3,3");
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/inventory"))){
-            bw.write("1,30\n" +
-                    "2,210\n" +
-                    "3,50\n" +
-                    "4,50");
+            bw.write("1,0\n" +
+                    "2,0\n" +
+                    "3,0\n" +
+                    "4,0");
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/fortress"))){
-            bw.write("1,true,true,true\n" +
-                    "2,false,false,false\n" +
-                    "3,false,false,false\n" +
-                    "4,false,false,false\n" +
-                    "5,false,false,false\n" +
-                    "6,false,false,false\n" +
-                    "7,false,false,false\n" +
-                    "8,false,false,false");
+            bw.write("1,true,true,true,3,3,3\n" +
+                    "2,false,false,false,3,3,3\n" +
+                    "3,false,false,false,3,3,3\n" +
+                    "4,false,false,false,3,3,3\n" +
+                    "5,false,false,false,3,3,3\n" +
+                    "6,false,false,false,3,3,3\n" +
+                    "7,false,false,false,3,3,3\n" +
+                    "8,false,false,false,3,3,3");
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }

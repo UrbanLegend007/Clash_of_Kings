@@ -11,6 +11,7 @@ public class Trade extends Command {
     private static final HashMap<String, Integer> itemValues = new HashMap<>();
     private int items = 1;
     private int kingItems = 10;
+    private Scanner scanner = new Scanner(System.in);
 
     public Trade(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
@@ -25,13 +26,15 @@ public class Trade extends Command {
 
     @Override
     public String execute() {
-        Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
-        String result = "";
 
-        try (Scanner scanner = new Scanner(System.in)) {
+        Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
+
+        try {
+
             if(worldCommandManager.atWar()) {
                 return "\nYou are at war.\nYou cannot currently trade.";
             } else {
+
                 System.out.print("Enter item to trade (krystals, resources, scrolls, metals): ");
                 String request = scanner.nextLine();
 
@@ -56,18 +59,16 @@ public class Trade extends Command {
                     items += kingItems;
                     kingItems = 0;
                     currentKingdom.setLoyalty(1);
-                    result = "Offer accepted. You traded all " + offeredItem + ".\nYou have collected all " + kingItems + " " + request + " and now you have " + items + " items.";
+                    return "Offer accepted. You traded all " + offeredItem + ".\nYou have collected all " + kingItems + " " + request + " and now you have " + items + " items.";
                 } else if (kingItems <= 0) {
-                    result = "No " + request + " available in this kingdom.";
+                    return "No " + request + " available in this kingdom.";
                 } else {
-                    result = "Trade rejected. Your offer was too low.";
+                    return "Trade rejected. Your offer was too low.";
                 }
             }
         } catch (Exception e) {
-            result = "An error occurred. Please try again.";
+            return "An error occurred. Please try again.";
         }
-
-        return result;
     }
 
     private int getRequiredValue(String resource) {

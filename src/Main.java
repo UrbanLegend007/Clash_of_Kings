@@ -10,6 +10,10 @@ public class Main {
         }
 
         /*
+        --fortress strength == 3
+        --ohlidat default hodnoty
+        dobyti fortress (jeho dodelani)
+        ohlidat attack
         --vytvorit armadu a jeji pocet + nacitani armady na default
         --nova hra (nacteni default hodnot
         resources / items
