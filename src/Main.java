@@ -12,8 +12,11 @@ public class Main {
         /*
         --fortress strength == 3
         --ohlidat default hodnoty
+        ohlidat nove armyInFortress + strength
+        ohlidat armySize, kdyz fortress occupied
+        ohlidat +1000 army kdyz defeat kingdom
         dobyti fortress (jeho dodelani)
-        ohlidat attack
+        -ohlidat attack
         --vytvorit armadu a jeji pocet + nacitani armady na default
         --nova hra (nacteni default hodnot
         resources / items

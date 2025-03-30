@@ -12,7 +12,7 @@ public class Army extends Command {
     private CommandManager worldCommandManager;
     private Scanner scanner = new Scanner(System.in);
     private Map<String, Boolean> fortresses = new HashMap<>();
-    private String[] fortressesNames;
+    private String[] fortressesNames = new String[3];
     private Inventory inventory = new Inventory();
     private String command;
     private int count = 0;
@@ -44,16 +44,15 @@ public class Army extends Command {
         if (worldCommandManager.atWar()) {
             try {
                 do {
-                    System.out.print("\nEnter command: \n1) attack \n2) defense \n3) use krystal \n4) exit \n-> ");
+                    System.out.print("\nEnter command: \n1) attack \n2) use krystal \n3) exit \n-> ");
                     command = scanner.nextLine();
 
                     if (command.equals("1") || command.equals("attack")) {
                         System.out.println(attackFortress());
-                    } else if (command.equals("2") || command.equals("defense")) {
                         System.out.println(defenseFortress());
-                    } else if (command.equals("3") || command.equals("use") || command.equals("krystal") || command.equals("use krystal")) {
+                    } else if (command.equals("2") || command.equals("use") || command.equals("krystal") || command.equals("use krystal")) {
                         System.out.println(useKrystal());
-                    } else if (command.equals("4") || command.equals("exit")) {
+                    } else if (command.equals("3") || command.equals("exit")) {
                         System.out.println();
                     } else {
                         System.out.println("Invalid command");
@@ -71,11 +70,8 @@ public class Army extends Command {
 
     private String defenseFortress() {
         try {
-            checkFortress();
+            if(getCurrentKingdom().isConquered().equals("not conquered") && getCurrentKingdom().getBattle().equals("Battling")){
 
-            if (count == 0) {
-                return "\nYou have all the fortresses.";
-            } else {
                 int fortressNumber = 0;
                 for (int i = 0; i < 3; i++) {
                     if(getCurrentKingdom().isFortressOccupied(i)){
@@ -86,11 +82,24 @@ public class Army extends Command {
                 System.out.println("You have to defend it.");
 
                 if(getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) > getCurrentKingdom().getArmySize()){
-
+                    getCurrentKingdom().setArmyInFortress(fortressNumber,
+                            (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) - getCurrentKingdom().getArmySize()) / getCurrentKingdom().getFortressStrength(fortressNumber));
+                    return "\nYour army has defended.\n" +
+                            "You have now " + getCurrentKingdom().getArmyInFortress(fortressNumber) + " in " + getFortressesName(fortressNumber) + ".";
+                }else if(getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) < getCurrentKingdom().getArmySize()){
+                    getCurrentKingdom().setFortressOccupied(fortressNumber, false);
+                    getCurrentKingdom().setArmyInFortress(fortressNumber,
+                            getCurrentKingdom().getArmySize() - getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber));
+                    return "\nYour army has been defeated.\n" +
+                            "You have lost " + getFortressesName(fortressNumber) + " in " + getCurrentKingdom().getName() + ".";
+                }else{
+                    getCurrentKingdom().setArmyInFortress(fortressNumber,0);
+                    return "\nBoth armies have been defeated.\n" +
+                            "You still have the fortress " + getFortressesName(fortressNumber) + ".\n" +
+                            "Your army in this fortress is " + getCurrentKingdom().getArmyInFortress(fortressNumber) + ".";
                 }
-
-                getCurrentKingdom().getArmyInFortress(1);
-                return "\nYour army has defended.";
+            } else {
+                return "";
             }
         } catch (Exception e) {
             return "Error while defending fortress.";

@@ -5,7 +5,6 @@ import Commands.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CommandManager {
@@ -23,12 +22,20 @@ public class CommandManager {
     public int currentPosition = start;
 
     public CommandManager(){
-        if (loadWorld()) {
-            System.out.println("\nMap successfully loaded.");
-        } else {
-            System.out.println("\nError loading map.");
+        try{
+            if (loadWorld()) {
+                System.out.println("\nMap successfully loaded.");
+            } else {
+                System.out.println("\nError loading map.");
+            }
+        } catch (Exception e) {
+            System.out.println("\nError loading the map.");
         }
-        start();
+        try{
+            start();
+        } catch (Exception e) {
+            System.out.println("Error starting the game.");
+        }
     }
 
     private void inicializace(){
@@ -46,7 +53,11 @@ public class CommandManager {
     }
 
     public void start(){
-        inicializace();
+        try{
+            inicializace();
+        }catch (Exception e) {
+            System.out.println("Error inicializating the game.");
+        }
         do{
             runCommand();
         }while(!exit);
@@ -197,7 +208,6 @@ public class CommandManager {
 
         if (current.getBorders().contains(targetId)) {
             currentPosition = targetId;
-
             if(currentPosition == 1){
                 myKingdom.setArmy(myKingdom.getMyArmy());
                 System.out.println("\nYour army has been rebuilt.");
