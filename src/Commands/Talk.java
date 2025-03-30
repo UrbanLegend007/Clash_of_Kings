@@ -18,6 +18,7 @@ public class Talk extends Command {
 
         try {
             currentKingdom.setLoyalty(1);
+            System.out.println("This kingdoms loyalty is now " + currentKingdom.getLoyalty() + ".");
             result = currentKingdom.getDialog(worldCommandManager.currentPosition);
         } catch (Exception e) {
             result = "An error occurred while attempting to talk to the kingdom.";
