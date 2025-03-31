@@ -11,6 +11,7 @@ public class Main {
 
         /*
         lepsi help (ubrani armady)
+        lepsi get
         --ohlidat default hodnoty
         ohlidat items a jejich ziskani + velikosti armad
         --ARMY ATTACK
