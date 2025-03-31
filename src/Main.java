@@ -10,8 +10,10 @@ public class Main {
         }
 
         /*
-        --fortress strength == 3
         --ohlidat default hodnoty
+        ohlidat items a jejich ziskani + velikosti armad
+        ARMY ATTACK
+        ohlidat *3 strength v default
         ohlidat nove armyInFortress + strength
         ohlidat armySize, kdyz fortress occupied
         ohlidat +1000 army kdyz defeat kingdom

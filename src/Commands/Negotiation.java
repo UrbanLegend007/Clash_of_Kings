@@ -22,10 +22,10 @@ public class Negotiation extends Command {
             scanner = new Scanner(System.in);
             Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
 
-            System.out.print("Enter what you want to do: \n1) attack \n2) peace terms \n3) alliance \n");
+            System.out.print("Enter what you want to do: \n1) start war \n2) peace terms \n3) alliance \n");
             String request = scanner.nextLine().toLowerCase();
 
-            if (request.equals("1") || request.equals("attack")) {
+            if (request.equals("1") || request.equals("war") || request.equals("start war") || request.equals("start")) {
                 currentKingdom.setLoyalty(0);
                 currentKingdom.setBattle("Battling");
                 return "You are attacking " + currentKingdom.getName() + ". All trading and alliances have been broken.";

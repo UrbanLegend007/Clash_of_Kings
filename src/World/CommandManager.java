@@ -23,6 +23,14 @@ public class CommandManager {
 
     public CommandManager(){
         try{
+            loadingGame();
+        } catch (Exception e){
+            System.out.println("Error while loading this game.");
+        }
+    }
+
+    public void loadingGame(){
+        try{
             if (loadWorld()) {
                 System.out.println("\nMap successfully loaded.");
             } else {
@@ -102,6 +110,8 @@ public class CommandManager {
                     resetWorld();
                 }else if(prikaz.equals("N") || prikaz.equals("no") || prikaz.equals("n")){
                     System.out.println("World has not been reset.");
+                }else{
+                    System.out.println("Invalid input. Please enter a valid command.");
                 }
             } else if (command.containsKey(prikaz)) {
                 System.out.println(command.get(prikaz).execute());
@@ -210,6 +220,7 @@ public class CommandManager {
             currentPosition = targetId;
             if(currentPosition == 1){
                 myKingdom.setArmy(myKingdom.getMyArmy());
+//                myKingdom.
                 System.out.println("\nYour army has been rebuilt.");
             }
             return "\nYou traveled to " + world.get(targetId).getName() + ".";
@@ -238,7 +249,7 @@ public class CommandManager {
             System.out.println("Error resetting world.");
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/resources"))){
-            bw.write("1,0,0,0,0\n" +
+            bw.write("1,1,1,1,1\n" +
                     "2,3,3,3,3\n" +
                     "3,3,3,3,3\n" +
                     "4,3,3,3,3\n" +
@@ -250,7 +261,7 @@ public class CommandManager {
             System.out.println("Error resetting world.");
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/items"))){
-            bw.write("1,0,0,0,0\n" +
+            bw.write("1,1,1,1,1\n" +
                     "2,3,3,3,3\n" +
                     "3,3,3,3,3\n" +
                     "4,3,3,3,3\n" +
@@ -262,10 +273,10 @@ public class CommandManager {
             System.out.println("Error resetting world.");
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/inventory"))){
-            bw.write("1,0\n" +
-                    "2,0\n" +
-                    "3,0\n" +
-                    "4,0");
+            bw.write("1,1\n" +
+                    "2,1\n" +
+                    "3,1\n" +
+                    "4,1");
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
@@ -283,7 +294,7 @@ public class CommandManager {
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/Army"))){
             bw.write("1,2000,2000,2000\n" +
-                    "2,5000,3000,3000\n" +
+                    "2,5000,3000,2500\n" +
                     "3,8500,4000,4000\n" +
                     "4,11000,5000,6000\n" +
                     "5,14000,7000,9000\n" +
@@ -292,6 +303,11 @@ public class CommandManager {
                     "8,20000,18000,13000");
         } catch (Exception e){
             System.out.println("Error resetting world.");
+        }
+        try{
+            loadingGame();
+        } catch (Exception e){
+            System.out.println("Error while resetting and loading game.");
         }
     }
 }
