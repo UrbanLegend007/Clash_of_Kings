@@ -10,24 +10,23 @@ public class Main {
         }
 
         /*
+        lepsi help (ubrani armady)
         --ohlidat default hodnoty
         ohlidat items a jejich ziskani + velikosti armad
-        ARMY ATTACK
-        ohlidat *3 strength v default
+        --ARMY ATTACK
+        -ohlidat *3 strength v default
         ohlidat nove armyInFortress + strength
         ohlidat armySize, kdyz fortress occupied
         ohlidat +1000 army kdyz defeat kingdom
         dobyti fortress (jeho dodelani)
         -ohlidat attack
-        --vytvorit armadu a jeji pocet + nacitani armady na default
-        --nova hra (nacteni default hodnot
         resources / items
         dialogy + rozhodovani pri dialogu
         ohlidat inventar a items a resources
         vytvorit inventar pro kazde kralovstvi
         moznost help kralovstvi
-        lepsi obchod + mena
-        -bitvy a bojiste
+        --lepsi obchod + mena
+        --bitvy a bojiste
 
         --ziskani uzemi
         postavy

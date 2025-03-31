@@ -40,9 +40,54 @@ public class CommandManager {
             System.out.println("\nError loading the map.");
         }
         try{
+            if(loadLocation()){
+                System.out.println("\nLocation successfully loaded.");
+            } else {
+                System.out.println("\nError loading location.");
+            }
+        } catch (Exception e) {
+            System.out.println("\nError loading the location.");
+        }
+        try{
             start();
         } catch (Exception e) {
             System.out.println("Error starting the game.");
+        }
+    }
+
+    public void setLocation(int location){
+        try (BufferedReader br = new BufferedReader(new FileReader("src/location"))) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                sb.append(location);
+            }
+            br.close();
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter("src/location"));
+            bw.write(sb.toString());
+            bw.close();
+            loadLocation();
+        } catch (Exception e){
+            System.out.println("Error setting the location.");
+        }
+    }
+
+    public boolean loadLocation(){
+        currentPosition = start;
+
+        try (BufferedReader br = new BufferedReader(new FileReader("src/location"))) {
+            String text;
+
+            while ((text = br.readLine()) != null) {
+                currentPosition = Integer.parseInt(text);
+                break;
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error loading location from the world.");
+            return false;
         }
     }
 
@@ -178,7 +223,7 @@ public class CommandManager {
     }
 
     public boolean loadWorld() {
-        try (BufferedReader br = new BufferedReader(new FileReader("src\\Map"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Map"))) {
             String text;
             while ((text = br.readLine()) != null) {
                 String[] line = text.split(",");
@@ -218,14 +263,15 @@ public class CommandManager {
 
         if (current.getBorders().contains(targetId)) {
             currentPosition = targetId;
+            setLocation(targetId);
             if(currentPosition == 1){
                 myKingdom.setArmy(myKingdom.getMyArmy());
-//                myKingdom.
+                myKingdom.setInventory(1);
                 System.out.println("\nYour army has been rebuilt.");
             }
-            return "\nYou traveled to " + world.get(targetId).getName() + ".";
+            return "\nYou traveled to " + world.get(currentPosition).getName() + ".";
         } else {
-            return "\nYou cannot travel to " + world.get(targetId).getName() + ".";
+            return "\nYou cannot travel to " + world.get(currentPosition).getName() + ".";
         }
     }
 
@@ -243,7 +289,7 @@ public class CommandManager {
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/myArmy"))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/reset"))){
             bw.write("2000");
         } catch (Exception e){
             System.out.println("Error resetting world.");
@@ -301,6 +347,11 @@ public class CommandManager {
                     "6,23000,20000,15000\n" +
                     "7,17000,15000,12000\n" +
                     "8,20000,18000,13000");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/location"))){
+            bw.write("1");
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
