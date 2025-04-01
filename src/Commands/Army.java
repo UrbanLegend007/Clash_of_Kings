@@ -141,7 +141,7 @@ public class Army extends Command {
                 return "\nThis fortress is already yours.";
             }
 
-            if (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) > getMyKingdom().getArmySize()) {
+            if (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) > getMyKingdom().getArmySize() + getMyKingdom().getStrength()) {
                 getCurrentKingdom().setFortressOccupied(fortressNumber, false);
 
                 getCurrentKingdom().setArmyInFortress(fortressNumber, (((getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber)) - getMyKingdom().getArmySize())) / getCurrentKingdom().getFortressStrength(fortressNumber));
@@ -150,7 +150,7 @@ public class Army extends Command {
                 return "\nYou have been defeated by " + getCurrentKingdom().getName() + ".\n"
                         + "Your army has " + getMyKingdom().getArmySize() + " soldiers.";
 
-            } else if (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) < getMyKingdom().getArmySize()) {
+            } else if (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) < getMyKingdom().getArmySize() + getMyKingdom().getStrength()) {
                 getCurrentKingdom().setFortressOccupied(fortressNumber, true);
 
                 getMyKingdom().setArmy((getMyKingdom().getArmySize() - (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber))) / 3);

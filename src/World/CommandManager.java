@@ -189,22 +189,6 @@ public class CommandManager {
         }
     }
 
-    public boolean atWar(){
-        Kingdom currentKingdom = world.get(currentPosition);
-
-        if (currentKingdom == null) {
-            System.out.println("Error: Unknown location.");
-        }
-
-        if(currentKingdom.getBattle().equals("Not Battling")){
-            return false;
-        }else if(currentKingdom.getBattle().equals("Battling")){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     public void showCharacters() {
         Kingdom currentKingdom = world.get(currentPosition);
 

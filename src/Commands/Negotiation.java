@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class Negotiation extends Command {
 
     private CommandManager worldCommandManager;
-    private Inventory inventory = new Inventory();
 
     public Negotiation(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
@@ -21,89 +20,70 @@ public class Negotiation extends Command {
         try {
             scanner = new Scanner(System.in);
             Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
+            Kingdom myKingdom = worldCommandManager.world.get(worldCommandManager.start);
 
-            System.out.print("Enter what you want to do: \n1) start war \n2) peace terms \n3) alliance \n");
-            String request = scanner.nextLine().toLowerCase();
+            if(currentKingdom.isConquered().equals("conquered")){
+                return "\nYou have already conquered this kingdom.";
+            }else {
+                System.out.print("\nEnter what you want to do: \n1) start war \n2) peace terms \n3) alliance \n");
+                String request = scanner.nextLine().toLowerCase();
 
-            if (request.equals("1") || request.equals("war") || request.equals("start war") || request.equals("start")) {
-                currentKingdom.setLoyalty(0);
-                currentKingdom.setBattle("Battling");
-                return "You are attacking " + currentKingdom.getName() + ". All trading and alliances have been broken.";
-            } else if (request.equals("2") || request.equals("peace terms")) {
+                if (request.equals("1") || request.equals("war") || request.equals("start war") || request.equals("start")) {
+                    currentKingdom.setLoyalty(0);
+                    currentKingdom.setBattle("Battling");
+                    return "\nYou are attacking " + currentKingdom.getName() + ". All trading and alliances have been broken.";
+                } else if (request.equals("2") || request.equals("peace terms")) {
 
-                if (worldCommandManager.atWar()) {
-                    System.out.println("Enter your peace terms:");
-                    System.out.println("Peace terms: \n - 1) You will leave this kingdom.\n - 2) You will give this kingdom 30 items (if you have just less, then everything of that item).\nDo you agree? (yes/no)");
+                    if (currentKingdom.getBattle().equals("Battling") || currentKingdom.isConquered().equals("Not Conquered")) {
+                        System.out.println("Peace terms: \n - 1) You will leave this kingdom and all of its fortresses.\n - 2) You will give this kingdom all items.\nDo you agree? (yes/no)");
 
-                    String terms = scanner.nextLine().toLowerCase();
-                    if (terms.equals("yes") || terms.equals("y")) {
-                        System.out.print("Enter what you offer (krystals, resources, scrolls, metals): ");
-                        String offeredItem = scanner.nextLine().toLowerCase();
-
-                        if (offeredItem.equals("resources")) {
-                            if (inventory.getResourceAmount(1) >= 30) {
-                                inventory.removeItem(1, 30);
-                                currentKingdom.setLoyalty(5);
-                                currentKingdom.setBattle("Not Battling");
-                                return "You made peace with " + currentKingdom.getName() + ".\nYou gave them 30 " + offeredItem + ".";
-                            } else {
-                                return "You don't have enough " + offeredItem + " left";
+                        String terms = scanner.nextLine().toLowerCase();
+                        if (terms.equals("yes") || terms.equals("y")) {
+                            for (int i = 0; i < 3; i++) {
+                                currentKingdom.setFortressOccupied(i, false);
                             }
-                        } else if (offeredItem.equals("scrolls")) {
-                            if (inventory.getResourceAmount(2) >= 30) {
-                                inventory.removeItem(2, 30);
-                                currentKingdom.setLoyalty(5);
-                                currentKingdom.setBattle("Not Battling");
-                                return "You made peace with " + currentKingdom.getName() + ".\nYou gave them 30 " + offeredItem + ".";
-                            } else {
-                                return "You don't have enough " + offeredItem + " left";
-                            }
-                        } else if (offeredItem.equals("metals")) {
-                            if (inventory.getResourceAmount(3) >= 30) {
-                                inventory.removeItem(3, 30);
-                                currentKingdom.setLoyalty(5);
-                                currentKingdom.setBattle("Not Battling");
-                                return "You made peace with " + currentKingdom.getName() + ".\nYou gave them 30 " + offeredItem + ".";
-                            } else {
-                                return "You don't have enough " + offeredItem + " left";
-                            }
-                        } else if (offeredItem.equals("krystals")) {
-                            if (inventory.getResourceAmount(4) >= 30) {
-                                inventory.removeItem(4, 30);
-                                currentKingdom.setLoyalty(5);
-                                currentKingdom.setBattle("Not Battling");
-                                return "You made peace with " + currentKingdom.getName() + ".\nYou gave them 30 " + offeredItem + ".";
-                            } else {
-                                return "You don't have enough " + offeredItem + " left";
-                            }
+
+                            currentKingdom.addItems("resources", myKingdom.getInventory(1), "items");
+                            currentKingdom.addItems("scrolls", myKingdom.getInventory(2), "items");
+                            currentKingdom.addItems("metals", myKingdom.getInventory(3), "items");
+                            currentKingdom.addItems("krystals", myKingdom.getInventory(4), "items");
+
+                            myKingdom.setInventory(0);
+                            currentKingdom.setBattle("Not Battling");
+                            currentKingdom.setLoyalty(3);
+
+                            return "\nYou gave " + currentKingdom.getName() + " all items\nYou are now in peace.";
+                        } else if (terms.equals("no") || terms.equals("n")) {
+                            return "\nYou declined the peace terms of " + currentKingdom.getName() + ".";
                         } else {
-                            return "Invalid input for offered item.";
+                            return "\nInvalid input for peace terms.";
                         }
-                    } else if (terms.equals("no") || terms.equals("n")) {
-                        return "You declined the peace terms of " + currentKingdom.getName() + ".";
                     } else {
-                        return "Invalid input for peace terms.";
+                        return "\nYou are not at war.";
                     }
-                } else {
-                    return "\nYou are not at war.";
-                }
-            } else if (request.equals("3") || request.equals("alliance")) {
+                } else if (request.equals("3") || request.equals("alliance")) {
 
-                if (worldCommandManager.atWar()) {
-                    return "\nYou are at war.\nYou cannot currently make an alliance.";
-                } else {
-                    currentKingdom.setLoyalty(3);
-                    return "You have made an alliance with " + currentKingdom.getName() + ".";
-                }
+                    if (currentKingdom.getBattle().equals("Battling")) {
+                        return "\nYou are at war.\nYou cannot currently make an alliance.";
+                    } else if(currentKingdom.getLoyalty() == 10){
+                        currentKingdom.setConquered("conquered");
+                        return "\nYou have made an alliance with " + currentKingdom.getName() + ".\nThis kingdom is conquered.";
+                    } else if (currentKingdom.getLoyalty() < 10) {
+                        return "\nThis kingdom needs to have loyalty 10.";
+                    } else {
+                        return "\nYou currently cannot make an allience.";
+                    }
 
-            } else {
-                return "Invalid input for action.";
+                } else {
+                    return "Invalid input for action.";
+                }
             }
+
 
         } catch (InputMismatchException e) {
             return "Invalid input type. Please enter a valid option.";
         } catch (Exception e) {
-            return "An error occurred: " + e.getMessage();
+            return "An error occurred while taking negotiation.";
         }
     }
 

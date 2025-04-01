@@ -32,26 +32,28 @@ public class Get extends Command{
         try {
 
             if(currentKingdom.isConquered().equals("not conquered") && currentKingdom.getBattle().equals("Battling")){
-                return "\nYou can't get items from this kingdom while you are at war.";
+                return "\nYou can't get resources from this kingdom while you are at war.";
+            } else if(currentKingdom.isConquered().equals("conquered")){
+                return "\nThis is already your kingdom.";
             } else {
 
-                System.out.print("\nEnter item to get (resources, scrolls, metals, krystals): ");
+                System.out.print("\nEnter resources to get (resources, scrolls, metals, krystals): ");
                 String request = scanner.nextLine();
 
-                if(currentKingdom.inventoryAmount(itemValues.get(request)) <= 0){
+                if(currentKingdom.inventoryAmount(itemValues.get(request), "resources") <= 0){
                     return "\nThis kingdom has no " + request + " to trade.";
                 } else if(!itemValues.containsKey(request)){
                     return "\nThere in not any " + request + " in this kingdom.";
                 }
 
-                int availableAmount = currentKingdom.inventoryAmount(itemValues.get(request));
+                int availableAmount = currentKingdom.inventoryAmount(itemValues.get(request), "resources");
 
                 if(availableAmount <= 0){
                     return "\nNo " + request + " available in this kingdom.";
                 }
 
                 if(currentKingdom.isConquered().equals("conquered")) {
-                    currentKingdom.collectItems(request, availableAmount, "items");
+                    currentKingdom.collectItems(request, availableAmount, "resources");
 
                     switch(request){
                         case "resources":
@@ -75,7 +77,7 @@ public class Get extends Command{
                     String offeredItem = scanner.nextLine();
 
                     if (!itemValues.containsKey(offeredItem)) {
-                        return "\nYou can't trade with that item.";
+                        return "\nYou can't offer that item.";
                     }
 
                     int offerValue = itemValues.get(offeredItem);
@@ -85,7 +87,7 @@ public class Get extends Command{
                         int requiredValue = getRequiredValue(request);
 
                         if (offerValue >= requiredValue) {
-                            currentKingdom.collectItems(request, availableAmount, "items");
+                            currentKingdom.collectItems(request, availableAmount, "resources");
                             switch(offeredItem){
                                 case "resources":
                                     inventory.removeItem(1, 1);
@@ -114,6 +116,7 @@ public class Get extends Command{
                                     inventory.addItem(4, availableAmount);
                                     break;
                             }
+                            currentKingdom.setLoyalty(1);
                             return "\nOffer accepted. You traded 1 " + offeredItem + ".\nYou have collected all " + availableAmount + " " + request + ".";
                         } else {
                             return "\nTrade rejected. Your offer was too low.";
@@ -130,7 +133,7 @@ public class Get extends Command{
         } catch (InputMismatchException e) {
             return "\nInvalid amount entered. Please enter a valid integer.";
         } catch (Exception e) {
-            return "\nError getting item.";
+            return "\nError getting resources.";
         }
     }
 
