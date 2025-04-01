@@ -71,7 +71,7 @@ public class Army extends Command {
         }
     }
 
-    private String defenseFortress() {
+    public String defenseFortress() {
         try {
             if(getCurrentKingdom().isConquered().equals("not conquered") && getCurrentKingdom().getBattle().equals("Battling")){
 
@@ -123,7 +123,7 @@ public class Army extends Command {
         }
     }
 
-    private String attackFortress() {
+    public String attackFortress() {
         try {
             checkFortress();
 
@@ -173,7 +173,7 @@ public class Army extends Command {
         }
     }
 
-    private String useKrystal() {
+    public String useKrystal() {
         try {
             checkFortress();
 
