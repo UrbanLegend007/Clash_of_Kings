@@ -19,10 +19,10 @@ public class Get extends Command{
     }
 
     static {
-        itemValues.put("krystals", 4);
-        itemValues.put("metals", 3);
-        itemValues.put("scrolls", 2);
         itemValues.put("resources", 1);
+        itemValues.put("scrolls", 2);
+        itemValues.put("metals", 3);
+        itemValues.put("krystals", 4);
     }
 
     @Override
@@ -35,14 +35,16 @@ public class Get extends Command{
                 return "\nYou can't get items from this kingdom while you are at war.";
             } else {
 
-                System.out.print("\nEnter item to get (krystals, resources, scrolls, metals): ");
+                System.out.print("\nEnter item to get (resources, scrolls, metals, krystals): ");
                 String request = scanner.nextLine();
 
-                if (!currentKingdom.getResources().containsKey(request) || currentKingdom.getResources().get(request) == 0) {
+                if(currentKingdom.inventoryAmount(itemValues.get(request)) <= 0){
                     return "\nThis kingdom has no " + request + " to trade.";
+                } else if(!itemValues.containsKey(request)){
+                    return "\nThere in not any " + request + " in this kingdom.";
                 }
 
-                int availableAmount = currentKingdom.getResources().getOrDefault(request, 0);
+                int availableAmount = currentKingdom.inventoryAmount(itemValues.get(request));
 
                 if(availableAmount <= 0){
                     return "\nNo " + request + " available in this kingdom.";
@@ -69,7 +71,7 @@ public class Get extends Command{
                     return "\nYou have collected all " + availableAmount + " " + request + ".";
 
                 } else if(currentKingdom.isConquered().equals("not conquered") && currentKingdom.getBattle().equals("Not Battling")){
-                    System.out.print("\nEnter what you offer (krystals, resources, scrolls, metals): ");
+                    System.out.print("\nEnter what you offer (resources, scrolls, metals, krystals): ");
                     String offeredItem = scanner.nextLine();
 
                     if (!itemValues.containsKey(offeredItem)) {
@@ -134,11 +136,15 @@ public class Get extends Command{
 
     private int getRequiredValue(String resource) {
         switch (resource) {
-            case "krystals": return 4;
-            case "metals": return 3;
-            case "scrolls": return 2;
-            case "resources": return 1;
-            default: return 2;
+            case "resources":
+                return 1;
+            case "scrolls":
+                return 2;
+            case "metals":
+                return 3;
+            case "krystals":
+                return 4;
+            default: return 1;
         }
     }
 

@@ -8,10 +8,10 @@ public class Inventory extends Command {
 
     private static final Map<Integer, String> resourceTypes = new HashMap<>();
     static {
-        resourceTypes.put(1, "Resources");
-        resourceTypes.put(2, "Scrolls");
-        resourceTypes.put(3, "Metal");
-        resourceTypes.put(4, "Krystals");
+        resourceTypes.put(1, "resources");
+        resourceTypes.put(2, "scrolls");
+        resourceTypes.put(3, "metal");
+        resourceTypes.put(4, "krystals");
     }
 
     @Override
@@ -75,9 +75,6 @@ public class Inventory extends Command {
         int currentAmount = inventory.getOrDefault(resourceType, 0);
         if (currentAmount >= amount) {
             inventory.put(resourceType, currentAmount - amount);
-//            if (inventory.get(resourceType) == 0) {
-//                inventory.remove(resourceType);
-//            }
             saveInventory(inventory);
             return true;
         } else {
