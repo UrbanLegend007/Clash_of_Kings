@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Inventory extends Command {
-    private static final String INVENTORY_FILE = "src/inventory";
 
     private static final Map<Integer, String> resourceTypes = new HashMap<>();
     static {
@@ -27,7 +26,7 @@ public class Inventory extends Command {
 
     private HashMap<Integer, Integer> loadInventory() {
         HashMap<Integer, Integer> inventory = new HashMap<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(INVENTORY_FILE))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/inventory"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -76,17 +75,20 @@ public class Inventory extends Command {
         int currentAmount = inventory.getOrDefault(resourceType, 0);
         if (currentAmount >= amount) {
             inventory.put(resourceType, currentAmount - amount);
-            if (inventory.get(resourceType) == 0) {
-                inventory.remove(resourceType);
-            }
+//            if (inventory.get(resourceType) == 0) {
+//                inventory.remove(resourceType);
+//            }
+            saveInventory(inventory);
+            return true;
+        } else {
+            inventory.put(resourceType, 0);
             saveInventory(inventory);
             return true;
         }
-        return false;
     }
 
     private void saveInventory(HashMap<Integer, Integer> inventory) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(INVENTORY_FILE))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/inventory"))) {
             for (Integer key : inventory.keySet()) {
                 bw.write(key + "," + inventory.get(key) + "\n");
             }

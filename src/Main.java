@@ -10,7 +10,8 @@ public class Main {
         }
 
         /*
-        lepsi help (ubrani armady)
+        GET
+        lepsi help (ubrat armadu)
         lepsi get
         --ohlidat default hodnoty
         ohlidat items a jejich ziskani + velikosti armad
