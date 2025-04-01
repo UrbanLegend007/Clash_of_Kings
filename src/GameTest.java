@@ -9,7 +9,16 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Třída obsahující testy pro různé herní příkazy.
+ * Tyto testy ověřují správnou funkčnost příkazů jako je reset, inventář, rozhovor, pomoc, armáda a postavy.
+ */
 class GameTest {
+
+    /**
+     * Testuje resetování hry.
+     * Ověřuje, zda se po resetování hry správně načte mapa a lokace, a zda se vypíše správná zpráva o resetování.
+     */
     @org.junit.jupiter.api.Test
     void reset() {
         String input1 = "reset\n";
@@ -33,6 +42,10 @@ class GameTest {
         assertTrue(output.contains("Location successfully loaded."));
     }
 
+    /**
+     * Testuje příkaz pro zobrazení inventáře.
+     * Ověřuje, zda se po zadání příkazu `inventory` vypíše správný výstup.
+     */
     @org.junit.jupiter.api.Test
     void inventory() {
         String input1 = "reset\n";
@@ -53,6 +66,10 @@ class GameTest {
         assertTrue(output.contains("Your inventory:"));
     }
 
+    /**
+     * Testuje příkaz pro rozhovor s postavou.
+     * Ověřuje, zda se po zadání příkazu `talk` zobrazí správná výzva pro zahájení rozhovoru.
+     */
     @org.junit.jupiter.api.Test
     void talk() {
         String input1 = "reset\n";
@@ -74,7 +91,10 @@ class GameTest {
     }
 
 
-
+    /**
+     * Testuje příkaz pro zobrazení nápovědy ve hře.
+     * Ověřuje, zda se po zadání příkazu `help` vypíší správné informace o boji a armádě.
+     */
     @org.junit.jupiter.api.Test
     void help() {
         String input1 = "reset\n";
@@ -97,6 +117,10 @@ class GameTest {
         assertTrue(output.contains("Your army will increase by defeating enemies."));
     }
 
+    /**
+     * Testuje příkaz pro zobrazení stavu armády.
+     * Ověřuje, zda se po zadání příkazu `army` zobrazí správná zpráva o již dobytém království.
+     */
     @org.junit.jupiter.api.Test
     void army() {
         String input1 = "reset\n";
@@ -117,6 +141,10 @@ class GameTest {
         assertTrue(output.contains("You have already conquered this kingdom."));
     }
 
+    /**
+     * Testuje příkaz pro zobrazení seznamu postav.
+     * Ověřuje, zda se po zadání příkazu `characters` zobrazí správné informace o postavách.
+     */
     @org.junit.jupiter.api.Test
     void characters() {
         String input1 = "reset\n";

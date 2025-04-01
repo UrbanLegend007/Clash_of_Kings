@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Třída Army reprezentuje armádní mechanismus ve hře.
+ * Umožňuje útoky na pevnosti, obranu a použití speciálních předmětů.
+ */
 public class Army extends Command {
 
     private CommandManager worldCommandManager;
@@ -18,6 +22,10 @@ public class Army extends Command {
     private int count = 0;
     private int occupiedIndex = -1;
 
+    /**
+     * Konstruktor třídy Army, inicializuje pevnosti a připojí správce příkazů.
+     * @param worldCommandManager Správce příkazů ve světě hry.
+     */
     public Army(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
 
@@ -27,11 +35,20 @@ public class Army extends Command {
         setFortressesNames();
     }
 
+    /**
+     * Nastaví názvy pevností.
+     */
     private void setFortressesNames() {
         this.fortressesNames[0] = "Main Castle";
         this.fortressesNames[1] = "Iron Keep";
         this.fortressesNames[2] = "Armyhold";
     }
+
+    /**
+     * Získá název pevnosti podle indexu.
+     * @param index Index pevnosti.
+     * @return Název pevnosti nebo zpráva o špatném indexu.
+     */
     private String getFortressesName(int index) {
         if(index < 0 || index >= fortressesNames.length){
             return "Wrong index for fortresses.";
@@ -40,6 +57,10 @@ public class Army extends Command {
         }
     }//worldCommandManager.atWar()
 
+    /**
+     * Hlavní metoda pro spuštění armádních akcí, jako je útok nebo obrana.
+     * @return Výsledek příkazu jako text.
+     */
     @Override
     public String execute() {
         if (getCurrentKingdom().getBattle().equals("Battling") && getCurrentKingdom().isConquered().equals("not conquered")) {
@@ -71,6 +92,10 @@ public class Army extends Command {
         }
     }
 
+    /**
+     * Brání pevnost proti útoku nepřítele.
+     * @return Výsledek obrany jako text.
+     */
     public String defenseFortress() {
         try {
             if(getCurrentKingdom().isConquered().equals("not conquered") && getCurrentKingdom().getBattle().equals("Battling")){
@@ -123,6 +148,10 @@ public class Army extends Command {
         }
     }
 
+    /**
+     * Útočí na vybranou pevnost.
+     * @return Výsledek útoku jako text.
+     */
     public String attackFortress() {
         try {
             checkFortress();
@@ -173,6 +202,10 @@ public class Army extends Command {
         }
     }
 
+    /**
+     * Použije krystal k oslabení pevnosti.
+     * @return Výsledek použití krystalu jako text.
+     */
     public String useKrystal() {
         try {
             checkFortress();
@@ -210,6 +243,9 @@ public class Army extends Command {
         }
     }
 
+    /**
+     * Kontroluje, zda bylo království dobyto.
+     */
     private void checkIfKingdomIsConquered() {
         boolean conquered = true;
         for (int i = 0; i < 3; i++) {
@@ -225,6 +261,9 @@ public class Army extends Command {
         }
     }
 
+    /**
+     * Kontroluje, které pevnosti jsou obsazené.
+     */
     private void checkFortress() {
         count = 0;
 
@@ -251,13 +290,26 @@ public class Army extends Command {
         }
     }
 
+    /**
+     * Získá aktuální království, ve kterém se hráč nachází.
+     * @return Aktuální království.
+     */
     private Kingdom getCurrentKingdom() {
         return worldCommandManager.world.get(worldCommandManager.currentPosition);
     }
 
+    /**
+     * Získá hráčovo vlastní království.
+     * @return Hráčovo království.
+     */
     private Kingdom getMyKingdom() {
         return worldCommandManager.world.get(worldCommandManager.start);
     }
+
+    /**
+     * Ukončí armádní operace.
+     * @return Vždy vrací false.
+     */
 
     @Override
     public boolean exit() {

@@ -7,6 +7,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Třída pro správu příkazů a interakci se světem.
+ * Obsahuje metody pro načítání světa, pohyb mezi královstvími, správu příkazů a resetování světa.
+ */
 public class CommandManager {
 
     private Scanner s = new Scanner(System.in);
@@ -21,6 +25,9 @@ public class CommandManager {
     public int start = 1;
     public int currentPosition = start;
 
+    /**
+     * Konstruktor pro inicializaci CommandManageru a načítání hry.
+     */
     public CommandManager(){
         try{
             loadingGame();
@@ -29,6 +36,9 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Načítá mapu a lokaci a spustí hru.
+     */
     public void loadingGame(){
         try{
             if (loadWorld()) {
@@ -55,6 +65,10 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Ukládá aktuální lokaci do souboru.
+     * @param location Nová pozice hráče.
+     */
     public void setLocation(int location){
         try (BufferedReader br = new BufferedReader(new FileReader("src/location"))) {
             StringBuilder sb = new StringBuilder();
@@ -74,6 +88,10 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Načítá aktuální lokaci hráče z disku.
+     * @return true pokud byla lokace načtena úspěšně, jinak false.
+     */
     public boolean loadLocation(){
         currentPosition = start;
 
@@ -91,6 +109,9 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Inicializuje příkazy pro hru.
+     */
     private void inicializace(){
         command = new HashMap<>();
         command.put("exit", new Exit());
@@ -105,6 +126,9 @@ public class CommandManager {
         command.put("travel", new Travel(this));
     }
 
+    /**
+     * Spustí hru a zpracovává příkazy uživatele.
+     */
     public void start(){
         try{
             inicializace();
@@ -116,6 +140,9 @@ public class CommandManager {
         }while(!exit);
     }
 
+    /**
+     * Zpracovává a vykonává příkazy zadané uživatelem.
+     */
     private void runCommand(){
         int count = 0;
         for (int i = 1; i <= 8; i++) {
@@ -171,7 +198,9 @@ public class CommandManager {
             exit = true;
         }
     }
-
+    /**
+     * Zobrazuje seznam dostupných království, kam může hráč cestovat.
+     */
     public void showBorders() {
         Kingdom currentKingdom = world.get(currentPosition);
 
@@ -189,6 +218,9 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Zobrazuje postavy všech království ve světě.
+     */
     public void showCharacters() {
         Kingdom currentKingdom = world.get(currentPosition);
 
@@ -206,6 +238,10 @@ public class CommandManager {
         System.out.println("--------------------------------------------------");
     }
 
+    /**
+     * Načítá svět z mapy do herního stavu.
+     * @return true pokud svět byl úspěšně načten, jinak false.
+     */
     public boolean loadWorld() {
         try (BufferedReader br = new BufferedReader(new FileReader("src/Map"))) {
             String text;
@@ -236,6 +272,11 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Cestuje na požadovanou destinaci v rámci království.
+     * @param destination Název cílového království.
+     * @return Zpráva o úspěchu nebo chybě při cestování.
+     */
     public String travelTo(String destination) {
         if (!nameToId.containsKey(destination)) {
             return "\nMisspelled kingdom.";
@@ -259,6 +300,9 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Resetuje svět na původní hodnoty.
+     */
     public void resetWorld() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/Map"))) {
             bw.write("1,My kingdom,2,3,4,conquered,My character,10,Not Battling\n");

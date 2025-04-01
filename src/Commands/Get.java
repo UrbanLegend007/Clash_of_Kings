@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Příkaz Get umožňuje hráči získat suroviny z království,
+ * a to buď obchodem, nebo pokud je království dobyto, tak bezplatně.
+ */
 public class Get extends Command{
 
     private CommandManager worldCommandManager;
@@ -14,10 +18,15 @@ public class Get extends Command{
     private Scanner scanner = new Scanner(System.in);
     private static final HashMap<String, Integer> itemValues = new HashMap<>();
 
+    /**
+     * Konstruktor třídy Get.
+     * @param worldCommandManager Správce příkazů ve hře.
+     */
     public Get(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
     }
 
+    // Inicializace hodnot pro typy surovin
     static {
         itemValues.put("resources", 1);
         itemValues.put("scrolls", 2);
@@ -25,6 +34,12 @@ public class Get extends Command{
         itemValues.put("krystals", 4);
     }
 
+    /**
+     * Provede příkaz získání surovin z aktuálního království.
+     * Hráč může suroviny získat zdarma, pokud království dobyl,
+     * nebo musí provést obchod, pokud království není jeho.
+     * @return Výsledek operace jako textová zpráva.
+     */
     @Override
     public String execute() {
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
@@ -137,6 +152,11 @@ public class Get extends Command{
         }
     }
 
+    /**
+     * Vrací hodnotu potřebnou k výměně dané suroviny.
+     * @param resource Název suroviny.
+     * @return Hodnota požadované suroviny.
+     */
     private int getRequiredValue(String resource) {
         switch (resource) {
             case "resources":
@@ -151,6 +171,10 @@ public class Get extends Command{
         }
     }
 
+    /**
+     * Určuje, zda tento příkaz má ukončit běh.
+     * @return Vždy vrací false.
+     */
     @Override
     public boolean exit() {
         return false;

@@ -5,16 +5,27 @@ import World.Kingdom;
 
 import java.util.Scanner;
 
+/**
+ * Třída Maintain umožňuje hráči udržovat svůj majetek a vybavení, čímž posiluje svou armádu.
+ */
 public class Maintain extends Command {
 
     private CommandManager worldCommandManager;
     Scanner scanner = new Scanner(System.in);
     private Inventory inventory = new Inventory();
 
+    /**
+     * Konstruktor pro třídu Maintain.
+     * @param worldCommandManager Správce příkazů pro svět hry.
+     */
     public Maintain(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
     }
 
+    /**
+     * Provede příkaz pro údržbu majetku nebo vybavení, což posiluje armádu.
+     * @return Textová zpráva informující o výsledku akce.
+     */
     @Override
     public String execute() {
 
@@ -47,10 +58,18 @@ public class Maintain extends Command {
         }
     }
 
+    /**
+     * Získá hráčovo vlastní království.
+     * @return Instance třídy Kingdom představující hráčovo hlavní království.
+     */
     private Kingdom getMyKingdom() {
         return worldCommandManager.world.get(worldCommandManager.start);
     }
 
+    /**
+     * Určuje, zda tento příkaz ukončí běh programu.
+     * @return Vždy vrací false.
+     */
     @Override
     public boolean exit() {
         return false;

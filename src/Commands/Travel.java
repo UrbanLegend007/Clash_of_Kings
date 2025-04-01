@@ -3,15 +3,29 @@ import World.CommandManager;
 
 import java.util.Scanner;
 
+/**
+ * Třída pro cestování mezi královstvími.
+ * Umožňuje hráči cestovat do jiných království zadáním jejich názvu.
+ */
 public class Travel extends Command {
     private CommandManager worldCommandManager;
 
+    /**
+     * Konstruktor pro vytvoření příkazu pro cestování.
+     * @param worldCommandManager Instance CommandManager pro správu světa a pozic.
+     */
     public Travel(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
     }
 
+    /**
+     * Provede cestování do zadaného království.
+     * Hráč zadá název království a bude přesměrován na příslušnou lokaci.
+     * @return Výstupní zpráva o úspěchu nebo chybě při cestování.
+     */
     @Override
     public String execute() {
+        // Zobrazení hranic království
         worldCommandManager.showBorders();
 
         Scanner scanner;
@@ -20,12 +34,17 @@ public class Travel extends Command {
             System.out.print("Enter name of the kingdom: ");
             String destination = scanner.nextLine().toLowerCase();
 
+            // Pokusí se cestovat na požadovanou destinaci
             return worldCommandManager.travelTo(destination);
         } catch (Exception e) {
             return "Invalid input! Please try again.";
         }
     }
 
+    /**
+     * Určuje, zda příkaz způsobí ukončení hry nebo operace.
+     * @return false, protože tento příkaz neukončuje hru.
+     */
     @Override
     public boolean exit() {
         return false;

@@ -6,14 +6,28 @@ import World.Kingdom;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Třída Negotiation umožňuje hráči vyjednávat s královstvím.
+ * Hráč si může vybrat mezi válkou, mírovými podmínkami nebo vytvořením aliance.
+ */
 public class Negotiation extends Command {
 
     private CommandManager worldCommandManager;
 
+    /**
+     * Konstruktor pro vytvoření příkazu vyjednávání.
+     * @param worldCommandManager Správce příkazů pro hru.
+     */
     public Negotiation(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
     }
 
+    /**
+     * Provede vyjednávání s aktuálním královstvím.
+     * @return Textová zpráva s výsledkem vyjednávání.
+     * Zpracuje mírové podmínky.
+     * Zpracuje vytvoření aliance s královstvím.
+     */
     @Override
     public String execute() {
         Scanner scanner = null;
@@ -87,6 +101,10 @@ public class Negotiation extends Command {
         }
     }
 
+    /**
+     * Určuje, zda tento příkaz ukončí běh programu.
+     * @return Vždy vrací false.
+     */
     @Override
     public boolean exit() {
         return false;
