@@ -1,6 +1,6 @@
 import World.CommandManager;
 
-/**
+ /**
  * Hlavní třída, která slouží k spuštění hry.
  * Tato třída inicializuje třídu `CommandManager`, která se stará o správu příkazů ve hře.
  * Pokud dojde k jakékoliv výjimce při načítání třídy `CommandManager`, zobrazí se chybová zpráva.
