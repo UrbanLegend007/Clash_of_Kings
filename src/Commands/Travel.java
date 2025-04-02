@@ -31,13 +31,13 @@ public class Travel extends Command {
         Scanner scanner;
         try {
             scanner = new Scanner(System.in);
-            System.out.print("Enter name of the kingdom: ");
+            System.out.print("\nEnter name of the kingdom: ");
             String destination = scanner.nextLine().toLowerCase();
 
             // Pokusí se cestovat na požadovanou destinaci
             return worldCommandManager.travelTo(destination);
         } catch (Exception e) {
-            return "Invalid input! Please try again.";
+            return "\nInvalid input! Please try again.";
         }
     }
 

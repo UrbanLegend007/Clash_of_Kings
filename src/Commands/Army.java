@@ -198,7 +198,7 @@ public class Army extends Command {
                         + "Your army has " + getMyKingdom().getArmySize() + " soldiers.";
             }
         } catch (Exception e) {
-            return "Error while attacking fortress.";
+            return "\nError while attacking fortress.";
         }
     }
 

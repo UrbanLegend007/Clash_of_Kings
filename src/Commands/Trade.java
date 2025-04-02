@@ -131,7 +131,7 @@ public class Trade extends Command {
                 return "\nError while trading.";
             }
         } catch (Exception e) {
-            return "An error occurred while trading.";
+            return "\nAn error occurred while trading.";
         }
     }
 

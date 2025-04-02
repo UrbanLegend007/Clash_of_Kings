@@ -26,19 +26,14 @@ public class Talk extends Command {
     @Override
     public String execute() {
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
-        String result = "";
 
         try {
-            // Zvýšení loajality království
             currentKingdom.setLoyalty(1);
-            result = "Toto království nyní má loajalitu " + currentKingdom.getLoyalty() + ".\n";
-            // Získání dialogu pro dané království
-            result += currentKingdom.getDialog(worldCommandManager.currentPosition);
-        } catch (Exception e) {
-            result = "Došlo k chybě při pokusu o rozhovor s královstvím: " + e.getMessage();
-        }
 
-        return result;
+            return currentKingdom.getDialog(worldCommandManager.currentPosition);
+        } catch (Exception e) {
+            return "\nDošlo k chybě při pokusu o rozhovor s královstvím: " + e.getMessage();
+        }
     }
 
     /**

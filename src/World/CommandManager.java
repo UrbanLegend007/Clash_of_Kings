@@ -70,7 +70,7 @@ public class CommandManager {
      * @param location Nová pozice hráče.
      */
     public void setLocation(int location){
-        try (BufferedReader br = new BufferedReader(new FileReader("src/location"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("res/location"))) {
             StringBuilder sb = new StringBuilder();
             String line;
 
@@ -79,7 +79,7 @@ public class CommandManager {
             }
             br.close();
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter("src/location"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("res/location"));
             bw.write(sb.toString());
             bw.close();
             loadLocation();
@@ -95,7 +95,7 @@ public class CommandManager {
     public boolean loadLocation(){
         currentPosition = start;
 
-        try (BufferedReader br = new BufferedReader(new FileReader("src/location"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("res/location"))) {
             String text;
 
             while ((text = br.readLine()) != null) {
@@ -115,7 +115,7 @@ public class CommandManager {
     private void inicializace(){
         command = new HashMap<>();
         command.put("exit", new Exit());
-        command.put("inventory", new Inventory());
+        command.put("res/inventory", new Inventory());
         command.put("help", new Help());
         command.put("talk", new Talk(this));
         command.put("army", new Army(this));
@@ -170,7 +170,7 @@ public class CommandManager {
             }
             if(prikaz.equals("characters")){
                 showCharacters();
-            } else if(prikaz.equals("reset")){
+            } else if(prikaz.equals("res/reset")){
                 System.out.println("\nDo you really want to reset the map? Y/N");
                 System.out.print(" -> ");
                 try {
@@ -243,7 +243,7 @@ public class CommandManager {
      * @return true pokud svět byl úspěšně načten, jinak false.
      */
     public boolean loadWorld() {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/Map"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("res/Map"))) {
             String text;
             while ((text = br.readLine()) != null) {
                 String[] line = text.split(",");
@@ -289,6 +289,7 @@ public class CommandManager {
         if (current.getBorders().contains(targetId)) {
             currentPosition = targetId;
             setLocation(targetId);
+            current.getScrolls(1);
             if(currentPosition == 1){
                 myKingdom.setArmy(myKingdom.getMyArmy());
                 myKingdom.setInventory(1);
@@ -304,7 +305,7 @@ public class CommandManager {
      * Resetuje svět na původní hodnoty.
      */
     public void resetWorld() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/Map"))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/Map"))) {
             bw.write("1,My kingdom,2,3,4,conquered,My character,10,Not Battling\n");
             bw.write("2,Shadow kingdom,1,3,5,not conquered,Dark king,5,Not Battling\n");
             bw.write("3,Copper kingdom,1,2,4,6,not conquered,Arthur king,5,Not Battling\n");
@@ -317,12 +318,12 @@ public class CommandManager {
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/reset"))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/reset"))){
             bw.write("2000");
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/resources"))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/resources"))){
             bw.write("1,1,1,1,1\n" +
                     "2,3,3,3,3\n" +
                     "3,3,3,3,3\n" +
@@ -334,7 +335,7 @@ public class CommandManager {
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/items"))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/items"))){
             bw.write("1,1,1,1,1\n" +
                     "2,3,3,3,3\n" +
                     "3,3,3,3,3\n" +
@@ -346,7 +347,7 @@ public class CommandManager {
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/inventory"))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/inventory"))){
             bw.write("1,1\n" +
                     "2,1\n" +
                     "3,1\n" +
@@ -354,7 +355,7 @@ public class CommandManager {
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/fortress"))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/fortress"))){
             bw.write("1,true,true,true,3,3,3\n" +
                     "2,false,false,false,3,3,3\n" +
                     "3,false,false,false,3,3,3\n" +
@@ -366,7 +367,7 @@ public class CommandManager {
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/Army"))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/Army"))){
             bw.write("1,2000,2000,2000\n" +
                     "2,5000,3000,2500\n" +
                     "3,8500,4000,4000\n" +
@@ -378,7 +379,7 @@ public class CommandManager {
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/location"))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/location"))){
             bw.write("1");
         } catch (Exception e){
             System.out.println("Error resetting world.");

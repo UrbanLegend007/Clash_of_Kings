@@ -95,9 +95,9 @@ public class Negotiation extends Command {
 
 
         } catch (InputMismatchException e) {
-            return "Invalid input type. Please enter a valid option.";
+            return "\nInvalid input type. Please enter a valid option.";
         } catch (Exception e) {
-            return "An error occurred while taking negotiation.";
+            return "\nAn error occurred while taking negotiation.";
         }
     }
 

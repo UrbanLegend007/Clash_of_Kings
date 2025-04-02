@@ -41,7 +41,7 @@ public class Inventory extends Command {
      */
     private HashMap<Integer, Integer> loadInventory() {
         HashMap<Integer, Integer> inventory = new HashMap<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("src/inventory"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("res/inventory"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -52,7 +52,7 @@ public class Inventory extends Command {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error loading inventory.");
+            System.out.println("\nError loading inventory.");
         }
         return inventory;
     }
@@ -65,16 +65,16 @@ public class Inventory extends Command {
         try{
             HashMap<Integer, Integer> inventory = loadInventory();
             if (inventory.isEmpty()) {
-                return "Your inventory is empty.";
+                return "\nYour inventory is empty.";
             }
 
-            StringBuilder sb = new StringBuilder("Your inventory:\n");
+            StringBuilder sb = new StringBuilder("\nYour inventory:\n");
             for (Integer key : inventory.keySet()) {
                 sb.append("- ").append(resourceTypes.get(key)).append(": ").append(inventory.get(key)).append("\n");
             }
             return sb.toString();
         } catch (Exception e){
-            return "Error getting inventory.";
+            return "\nError getting inventory.";
         }
     }
 
@@ -125,12 +125,12 @@ public class Inventory extends Command {
      * @param inventory Mapa obsahující inventář.
      */
     private void saveInventory(HashMap<Integer, Integer> inventory) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/inventory"))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/inventory"))) {
             for (Integer key : inventory.keySet()) {
                 bw.write(key + "," + inventory.get(key) + "\n");
             }
         } catch (Exception e) {
-            System.out.println("Error saving inventory.");
+            System.out.println("\nError saving inventory.");
         }
     }
 }

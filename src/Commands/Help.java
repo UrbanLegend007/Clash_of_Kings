@@ -9,7 +9,7 @@ public class Help extends Command {
      * Konstruktor třídy Help.
      */
     public Help() {
-        // Konstruktor bez parametrů
+
     }
 
     /**
