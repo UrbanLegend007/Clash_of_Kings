@@ -3,6 +3,9 @@ package Commands;
 import World.CommandManager;
 import World.Kingdom;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -24,14 +27,36 @@ public class Get extends Command{
      */
     public Get(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
+        loadItemValues();
     }
 
-    // Inicializace hodnot pro typy surovin
-    static {
-        itemValues.put("resources", 1);
-        itemValues.put("scrolls", 2);
-        itemValues.put("metals", 3);
-        itemValues.put("krystals", 4);
+    /**
+     * Vrací hodnotu potřebnou k výměně dané suroviny.
+     * @param resource Název suroviny.
+     * @return Hodnota požadované suroviny.
+     */
+    private int getRequiredValue(String resource) {
+        return switch (resource) {
+            case "resources" -> itemValues.get("resources");
+            case "scrolls" -> itemValues.get("scrolls");
+            case "metals" -> itemValues.get("metals");
+            case "krystals" -> itemValues.get("krystals");
+            default -> 1;
+        };
+    }
+
+    public void loadItemValues() {
+        try (BufferedReader br = new BufferedReader(new FileReader("res/itemValues"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                itemValues.put(parts[0], Integer.parseInt(parts[1]));
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading item values from file.");
+        } catch (Exception e) {
+            System.out.println("Error loading item values.");
+        }
     }
 
     /**
@@ -149,25 +174,6 @@ public class Get extends Command{
             return "\nInvalid amount entered. Please enter a valid integer.";
         } catch (Exception e) {
             return "\nError getting resources.";
-        }
-    }
-
-    /**
-     * Vrací hodnotu potřebnou k výměně dané suroviny.
-     * @param resource Název suroviny.
-     * @return Hodnota požadované suroviny.
-     */
-    private int getRequiredValue(String resource) {
-        switch (resource) {
-            case "resources":
-                return 1;
-            case "scrolls":
-                return 2;
-            case "metals":
-                return 3;
-            case "krystals":
-                return 4;
-            default: return 1;
         }
     }
 
