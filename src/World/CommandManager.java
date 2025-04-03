@@ -289,7 +289,6 @@ public class CommandManager {
         if (current.getBorders().contains(targetId)) {
             currentPosition = targetId;
             setLocation(targetId);
-            current.getScrolls(1);
             if(currentPosition == 1){
                 myKingdom.setArmy(myKingdom.getMyArmy());
                 myKingdom.setInventory(1);
