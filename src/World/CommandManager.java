@@ -170,7 +170,7 @@ public class CommandManager {
             }
             if(prikaz.equals("characters")){
                 showCharacters();
-            } else if(prikaz.equals("res/reset")){
+            } else if(prikaz.equals("reset")){
                 System.out.println("\nDo you really want to reset the map? Y/N");
                 System.out.print(" -> ");
                 try {
