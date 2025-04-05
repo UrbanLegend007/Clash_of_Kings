@@ -88,10 +88,6 @@ public class Get extends Command{
 
                 int availableAmount = currentKingdom.inventoryAmount(itemValues.get(request), "resources");
 
-                if(availableAmount <= 0){
-                    return "\nNo " + request + " available in this kingdom.";
-                }
-
                 if(currentKingdom.isConquered().equals("conquered")) {
                     currentKingdom.collectItems(request, availableAmount, "resources");
 
@@ -124,22 +120,40 @@ public class Get extends Command{
 
                     if (inventory.getResourceAmount(offerValue) > 0){
 
+                        System.out.println("\nEnter the amount you would like to offer: ");
+                        int amount = 1;
+                        try{
+                            amount = scanner.nextInt();
+                        } catch (Exception e){
+                            return "\nInvalid amount.";
+                        }
+
+                        if(amount <= 0){
+                            return "\nYou can't offer that amount.";
+                        } else if(amount > inventory.getResourceAmount(offerValue)){
+                            return "\nYou don't have that amount.";
+                        }
+
                         int requiredValue = getRequiredValue(request);
 
-                        if (offerValue >= requiredValue) {
+                        if (offerValue * amount >= requiredValue) {
                             currentKingdom.collectItems(request, availableAmount, "resources");
                             switch(offeredItem){
                                 case "resources":
-                                    inventory.removeItem(1, 1);
+                                    inventory.removeItem(1, amount);
+                                    currentKingdom.addItems(offeredItem,amount, "items");
                                     break;
                                 case "scrolls":
-                                    inventory.removeItem(2, 1);
+                                    inventory.removeItem(2, amount);
+                                    currentKingdom.addItems(offeredItem,amount, "items");
                                     break;
                                 case "metals":
-                                    inventory.removeItem(3, 1);
+                                    inventory.removeItem(3, amount);
+                                    currentKingdom.addItems(offeredItem,amount, "items");
                                     break;
                                 case "krystals":
-                                    inventory.removeItem(4, 1);
+                                    inventory.removeItem(4, amount);
+                                    currentKingdom.addItems(offeredItem,amount, "items");
                                     break;
                             }
                             switch(request){
