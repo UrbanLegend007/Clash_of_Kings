@@ -83,8 +83,6 @@ public class Kingdom {
     }
 
     public void loadScrolls(){
-        if (!scrolls.isEmpty()) return;
-
         try (BufferedReader br = new BufferedReader(new FileReader("res/scrolls"))){
             String line;
             boolean get;
@@ -98,6 +96,44 @@ public class Kingdom {
             }
         } catch (Exception e){
             System.out.println("Error while getting srolls.");
+        }
+    }
+
+    public void setScrolls(int id, boolean get) {
+        if(id <= 0 || id > 21){
+            System.out.println("Scroll ID out of bounds: " + id);
+            return;
+        }
+        List<String> updatedLines = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("res/scrolls"))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(";", 3);
+                if (Integer.parseInt(parts[0]) == id) {
+                    line = parts[0] + ";" + parts[1] + ";" + get;
+                }
+                updatedLines.add(line);
+            }
+//            loadScrolls();
+        } catch (Exception e) {
+            System.out.println("Error while setting scrolls.");
+            return;
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/scrolls"))) {
+            for (String updatedLine : updatedLines) {
+                bw.write(updatedLine);
+                bw.newLine();
+            }
+        } catch (Exception e) {
+            System.out.println("Error while writing updated scrolls.");
+        }
+        try {
+            loadScrolls();
+        } catch (Exception e) {
+            System.out.println("Error while loading scrolls.");
         }
     }
 
