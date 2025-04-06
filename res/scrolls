@@ -1,21 +1,21 @@
-1;Shadow kingdom has in Main castle 5000 soldiers.
-2;Shadow kingdom has in Iron Keep 3000 soldiers.
-3;Shadow kingdom has in Armyhold 2500 soldiers.
-4;Copper kingdom has in Main castle 8500 soldiers.
-5;Copper kingdom has in Iron Keep 4000 soldiers.
-6;Copper kingdom has in Armyhold 4000 soldiers.
-7;Forest kingdom has in Main castle 11000 soldiers.
-8;Forest kingdom has in Iron Keep 5000 soldiers.
-9;Forest kingdom has in Armyhold 6000 soldiers.
-10;Northern kingdom has in Main castle 14000 soldiers.
-11;Northern kingdom has in Iron Keep 7000 soldiers.
-12;Northern kingdom has in Armyhold 9000 soldiers.
-13;Sea kingdom has in Main castle 23000 soldiers.
-14;Sea kingdom has in Iron Keep 20000 soldiers.
-15;Sea kingdom has in Armyhold 15000 soldiers.
-16;Sun-Desert kingdom has in Main castle 17000 soldiers.
-17;Sun-Desert kingdom has in Iron Keep 15000 soldiers.
-18;Sun-Desert kingdom has in Armyhold 12000 soldiers.
-19;East kingdom has in Main castle 20000 soldiers.
-20;East kingdom has in Iron Keep 18000 soldiers.
-21;East kingdom has in Armyhold 13000 soldiers.
+1;Shadow kingdom has in Main castle 5000 soldiers.;false
+2;Shadow kingdom has in Iron Keep 3000 soldiers.;false
+3;Shadow kingdom has in Armyhold 2500 soldiers.;false
+4;Copper kingdom has in Main castle 8500 soldiers.;false
+5;Copper kingdom has in Iron Keep 4000 soldiers.;false
+6;Copper kingdom has in Armyhold 4000 soldiers.;false
+7;Forest kingdom has in Main castle 11000 soldiers.;false
+8;Forest kingdom has in Iron Keep 5000 soldiers.;false
+9;Forest kingdom has in Armyhold 6000 soldiers.;false
+10;Northern kingdom has in Main castle 14000 soldiers.;false
+11;Northern kingdom has in Iron Keep 7000 soldiers.;false
+12;Northern kingdom has in Armyhold 9000 soldiers.;false
+13;Sea kingdom has in Main castle 23000 soldiers.;false
+14;Sea kingdom has in Iron Keep 20000 soldiers.;false
+15;Sea kingdom has in Armyhold 15000 soldiers.;false
+16;Sun-Desert kingdom has in Main castle 17000 soldiers.;false
+17;Sun-Desert kingdom has in Iron Keep 15000 soldiers.;false
+18;Sun-Desert kingdom has in Armyhold 12000 soldiers.;false
+19;East kingdom has in Main castle 20000 soldiers.;false
+20;East kingdom has in Iron Keep 18000 soldiers.;false
+21;East kingdom has in Armyhold 13000 soldiers.;false

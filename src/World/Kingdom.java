@@ -82,27 +82,36 @@ public class Kingdom {
         }
     }
 
-    public String getScrolls(int scrollsID){
-        if(scrollsID < 1 || scrollsID > 21) {
-            return "Invalid ID for scrolls.";
-        } else {
-            return scrolls.get(scrollsID);
-        }
-    }
-
     public void loadScrolls(){
         if (!scrolls.isEmpty()) return;
 
         try (BufferedReader br = new BufferedReader(new FileReader("res/scrolls"))){
             String line;
+            boolean get;
 
             while ((line = br.readLine()) != null){
-                String[] parts = line.split(";", 2);
-
-                scrolls.put(Integer.parseInt(parts[0]), parts[1]);
+                String[] parts = line.split(";", 3);
+                get = Boolean.parseBoolean(parts[2]);
+                if(get){
+                    scrolls.put(Integer.parseInt(parts[0]), parts[1]);
+                }
             }
         } catch (Exception e){
             System.out.println("Error while getting srolls.");
+        }
+    }
+
+    public String getScrolls(){
+        if(scrolls.isEmpty()){
+            return "\nYou have no scrolls.";
+        } else {
+            System.out.println();
+            for (int i = 1; i <= 21; i++) {
+                if(scrolls.containsKey(i)){
+                    System.out.println(scrolls.get(i));
+                }
+            }
+            return "\nYou have " + scrolls.size() + " scrolls.";
         }
     }
 

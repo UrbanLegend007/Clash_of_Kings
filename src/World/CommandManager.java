@@ -156,7 +156,7 @@ public class CommandManager {
         }
         if(!won){
             System.out.println("\nCurrent location: " + world.get(currentPosition).toString());
-            System.out.println("\nCommands: \n-> reset, characters, inventory, travel, help, get, trade, talk, army, negotiation, maintain, exit");
+            System.out.println("\nCommands: \n-> reset, scrolls, characters, inventory, travel, help, get, trade, talk, army, negotiation, maintain, exit");
             System.out.println("\nEnter command: ");
             System.out.print(" -> ");
             String prikaz = "";
@@ -185,6 +185,8 @@ public class CommandManager {
                 }else{
                     System.out.println("Invalid input. Please enter a valid command.");
                 }
+            } else if(prikaz.equals("scrolls")){
+                System.out.println(world.get(currentPosition).getScrolls());
             } else if (command.containsKey(prikaz)) {
                 System.out.println(command.get(prikaz).execute());
                 exit = command.get(prikaz).exit();
@@ -383,6 +385,45 @@ public class CommandManager {
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/scrolls"))){
+            bw.write("1;Shadow kingdom has in Main castle 5000 soldiers.;false\n" +
+                    "2;Shadow kingdom has in Iron Keep 3000 soldiers.;false\n" +
+                    "3;Shadow kingdom has in Armyhold 2500 soldiers.;false\n" +
+                    "4;Copper kingdom has in Main castle 8500 soldiers.;false\n" +
+                    "5;Copper kingdom has in Iron Keep 4000 soldiers.;false\n" +
+                    "6;Copper kingdom has in Armyhold 4000 soldiers.;false\n" +
+                    "7;Forest kingdom has in Main castle 11000 soldiers.;false\n" +
+                    "8;Forest kingdom has in Iron Keep 5000 soldiers.;false\n" +
+                    "9;Forest kingdom has in Armyhold 6000 soldiers.;false\n" +
+                    "10;Northern kingdom has in Main castle 14000 soldiers.;false\n" +
+                    "11;Northern kingdom has in Iron Keep 7000 soldiers.;false\n" +
+                    "12;Northern kingdom has in Armyhold 9000 soldiers.;false\n" +
+                    "13;Sea kingdom has in Main castle 23000 soldiers.;false\n" +
+                    "14;Sea kingdom has in Iron Keep 20000 soldiers.;false\n" +
+                    "15;Sea kingdom has in Armyhold 15000 soldiers.;false\n" +
+                    "16;Sun-Desert kingdom has in Main castle 17000 soldiers.;false\n" +
+                    "17;Sun-Desert kingdom has in Iron Keep 15000 soldiers.;false\n" +
+                    "18;Sun-Desert kingdom has in Armyhold 12000 soldiers.;false\n" +
+                    "19;East kingdom has in Main castle 20000 soldiers.;false\n" +
+                    "20;East kingdom has in Iron Keep 18000 soldiers.;false\n" +
+                    "21;East kingdom has in Armyhold 13000 soldiers.;false");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/strength"))){
+            bw.write("0");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/itemValues"))){
+            bw.write("resources,1\n" +
+                    "scrolls,2\n" +
+                    "metals,3\n" +
+                    "krystals,4");
+        } catch (Exception e){
+            System.out.println("Error resetting world.");
+        }
+
         try{
             loadingGame();
         } catch (Exception e){
