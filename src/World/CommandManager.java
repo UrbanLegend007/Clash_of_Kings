@@ -293,7 +293,7 @@ public class CommandManager {
             setLocation(targetId);
             if(currentPosition == 1){
                 myKingdom.setArmy(myKingdom.getMyArmy());
-                myKingdom.setInventory(1);
+                myKingdom.setInventory(0,1);
                 System.out.println("\nYour army has been rebuilt.");
             }
             return "\nYou traveled to " + world.get(currentPosition).getName() + ".";

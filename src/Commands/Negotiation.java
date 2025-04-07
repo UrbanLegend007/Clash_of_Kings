@@ -62,7 +62,7 @@ public class Negotiation extends Command {
                             currentKingdom.addItems("metals", myKingdom.getInventory(3), "items");
                             currentKingdom.addItems("krystals", myKingdom.getInventory(4), "items");
 
-                            myKingdom.setInventory(0);
+                            myKingdom.setInventory(0,0);
                             currentKingdom.setBattle("Not Battling");
                             currentKingdom.setLoyalty(3);
 

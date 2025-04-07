@@ -25,6 +25,10 @@ public class Kingdom {
     private HashMap<Integer, String> scrolls = new HashMap<>();
     private int[] fortressesStrength = new int[3];
 
+    public int getScollsSize(){
+        return scrolls.size();
+    }
+
     /**
      * Konstruktor pro vytvoření nového království s danými parametry.
      *
@@ -92,6 +96,8 @@ public class Kingdom {
                 get = Boolean.parseBoolean(parts[2]);
                 if(get){
                     scrolls.put(Integer.parseInt(parts[0]), parts[1]);
+                } else {
+                    scrolls.remove(Integer.parseInt(parts[0]));
                 }
             }
         } catch (Exception e){
@@ -116,7 +122,6 @@ public class Kingdom {
                 }
                 updatedLines.add(line);
             }
-//            loadScrolls();
         } catch (Exception e) {
             System.out.println("Error while setting scrolls.");
             return;
@@ -135,6 +140,7 @@ public class Kingdom {
         } catch (Exception e) {
             System.out.println("Error while loading scrolls.");
         }
+        this.setInventory(id, scrolls.size());
     }
 
     public String getScrolls(){
@@ -333,14 +339,44 @@ public class Kingdom {
     /**
      * Nastaví inventář.
      */
-    public void setInventory(int amount){
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/inventory"))){
-            bw.write("1," + amount + "\n" +
-                    "2," + amount + "\n" +
-                    "3," + amount + "\n" +
-                    "4," + amount);
-        } catch (Exception e){
-            System.out.println("Error reseting inventory world.");
+    public void setInventory(int id, int amount){
+        if(id < 0 || id > 21){
+            System.out.println("\nInvalid inventory index: " + id);
+            return;
+        } else if(id == 0){
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/inventory"))){
+                bw.write("1," + amount + "\n" +
+                        "2," + amount + "\n" +
+                        "3," + amount + "\n" +
+                        "4," + amount);
+            } catch (Exception e){
+                System.out.println("\nError reseting inventory world.");
+            }
+            return;
+        }
+        List<String> updatedLines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("res/inventory"))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",", 2);
+                if (Integer.parseInt(parts[0]) == id) {
+                    line = parts[0] + "," + amount;
+                }
+                updatedLines.add(line);
+            }
+        } catch (Exception e) {
+            System.out.println("\nError while setting inventory.");
+            return;
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/inventory"))) {
+            for (String updatedLine : updatedLines) {
+                bw.write(updatedLine);
+                bw.newLine();
+            }
+        } catch (Exception e) {
+            System.out.println("\nError while writing updated inventory.");
         }
     }
 

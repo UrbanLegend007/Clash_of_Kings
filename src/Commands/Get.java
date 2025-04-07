@@ -96,6 +96,7 @@ public class Get extends Command{
                             inventory.addItem(1, availableAmount);
                             break;
                         case "scrolls":
+                            currentKingdom.setScrolls();
                             inventory.addItem(2, availableAmount);
                             break;
                         case "metals":
