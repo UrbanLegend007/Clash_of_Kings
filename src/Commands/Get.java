@@ -96,7 +96,17 @@ public class Get extends Command{
                             inventory.addItem(1, availableAmount);
                             break;
                         case "scrolls":
-                            currentKingdom.setScrolls();
+                            int scrollAmount;
+                            if(currentKingdom.getSrcollsSize() + availableAmount > 21){
+                                scrollAmount = 21;
+                            } else if(currentKingdom.getSrcollsSize() + availableAmount <= 0){
+                                scrollAmount = currentKingdom.getSrcollsSize();
+                            } else {
+                                scrollAmount = currentKingdom.getSrcollsSize() + availableAmount;
+                            }
+                            for (int i = currentKingdom.getSrcollsSize(); i <= scrollAmount; i++) {
+                                currentKingdom.setScrolls(i, true);
+                            }
                             inventory.addItem(2, availableAmount);
                             break;
                         case "metals":
@@ -145,6 +155,17 @@ public class Get extends Command{
                                     currentKingdom.addItems(offeredItem,amount, "items");
                                     break;
                                 case "scrolls":
+                                    int scrollAmount;
+                                    if(currentKingdom.getSrcollsSize() - amount <= 0){
+                                        for (int i = currentKingdom.getSrcollsSize(); i >= 1; i--) {
+                                            currentKingdom.setScrolls(i,false);
+                                        }
+                                    } else if(currentKingdom.getSrcollsSize() - amount > 0 && currentKingdom.getSrcollsSize() - amount <= 21){
+                                        scrollAmount = currentKingdom.getSrcollsSize() - amount;
+                                        for (int i = currentKingdom.getSrcollsSize(); i > scrollAmount; i--) {
+                                            currentKingdom.setScrolls(i,false);
+                                        }
+                                    }
                                     inventory.removeItem(2, amount);
                                     currentKingdom.addItems(offeredItem,amount, "items");
                                     break;
@@ -162,6 +183,17 @@ public class Get extends Command{
                                     inventory.addItem(1, availableAmount);
                                     break;
                                 case "scrolls":
+                                    int scrollAmount;
+                                    if(currentKingdom.getSrcollsSize() + availableAmount > 21){
+                                        scrollAmount = 21;
+                                    } else if(currentKingdom.getSrcollsSize() + availableAmount <= 0){
+                                        scrollAmount = currentKingdom.getSrcollsSize();
+                                    } else {
+                                        scrollAmount = currentKingdom.getSrcollsSize() + availableAmount;
+                                    }
+                                    for (int i = currentKingdom.getSrcollsSize(); i <= scrollAmount; i++) {
+                                        currentKingdom.setScrolls(i, true);
+                                    }
                                     inventory.addItem(2, availableAmount);
                                     break;
                                 case "metals":

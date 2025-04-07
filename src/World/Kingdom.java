@@ -25,7 +25,7 @@ public class Kingdom {
     private HashMap<Integer, String> scrolls = new HashMap<>();
     private int[] fortressesStrength = new int[3];
 
-    public int getScollsSize(){
+    public int getSrcollsSize(){
         return scrolls.size();
     }
 
