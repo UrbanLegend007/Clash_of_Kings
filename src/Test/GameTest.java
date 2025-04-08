@@ -113,8 +113,8 @@ class GameTest {
         String output = outputStream.toString();
 
 
-        assertTrue(output.contains("You can conquere them by defeating them in a battle, or get their loyalty and make an alliance."));
-        assertTrue(output.contains("Your army will increase by defeating enemies."));
+        assertTrue(output.contains("You have to conquer all the kingdoms."));
+        assertTrue(output.contains("Your army, fortresses strength and inventory will be rebuilt when you return to My Kingdom."));
     }
 
     /**
