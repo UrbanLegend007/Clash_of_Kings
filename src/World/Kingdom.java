@@ -314,7 +314,7 @@ public class Kingdom {
      * Načte armádu pro toto království z externího souboru.
      */
     private void loadArmy() {
-        try (BufferedReader br = new BufferedReader(new FileReader("res/Army"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("res/army"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -745,13 +745,13 @@ public class Kingdom {
      */
     public void setLoyalty(int loy) {
         if(loy > 0){
-            if((loyalty += loy) < 10 && (loyalty+= loy) > 0){
+            if((loyalty + loy) < 10 && (loyalty + loy) > 0){
                 this.loyalty += loy;
 
-            }else if((loyalty += loy) >= 10){
+            }else if((loyalty + loy) >= 10){
                 this.loyalty = 10;
 
-            }else if((loyalty += loy) <= 0){
+            }else if((loyalty + loy) <= 0){
                 this.loyalty = 0;
             }
 
@@ -808,6 +808,8 @@ public class Kingdom {
             this.setBattle("Not Battling");
             this.setMyArmy(1000);
             return "\n" + this.getName() + " has loyalty " + loyalty + ".\nYou have peacefully conquered " + this.getName() + ".\nYour army has increased by 1000 soldiers.";
+        } else if(loyalty >= 0){
+            return "";
         } else {
             return "";
         }
@@ -945,6 +947,6 @@ public class Kingdom {
         } catch (Exception e){
             System.out.println("Error getting army for My kingdom.");
         }
-        return army;
+        return army*3;
     }
 }

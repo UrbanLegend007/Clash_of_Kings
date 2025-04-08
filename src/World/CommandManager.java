@@ -118,7 +118,7 @@ public class CommandManager {
         command.put("inventory", new Inventory());
         command.put("help", new Help());
         command.put("talk", new Talk(this));
-        command.put("army", new Army(this,false));
+        command.put("army", new Army(this,false,false));
         command.put("negotiation", new Negotiation(this));
         command.put("maintain", new Maintain(this));
         command.put("trade", new Trade(this));
@@ -306,7 +306,7 @@ public class CommandManager {
                 System.out.println("\nYour army has been rebuilt.");
             }
             System.out.println("\nYou traveled to " + world.get(currentPosition).getName() + ".");
-            new Army(this,true).execute();
+            new Army(this,true,true).execute();
             return "";
         } else {
             return "\nYou cannot travel to " + world.get(currentPosition).getName() + ".";
@@ -361,7 +361,7 @@ public class CommandManager {
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/inventory"))){
             bw.write("1,1\n" +
-                    "2,1\n" +
+                    "2,0\n" +
                     "3,1\n" +
                     "4,1");
         } catch (Exception e){
@@ -379,7 +379,7 @@ public class CommandManager {
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/Army"))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/army"))){
             bw.write("1,2000,2000,2000\n" +
                     "2,5000,3000,2500\n" +
                     "3,8500,4000,4000\n" +

@@ -106,12 +106,24 @@ public class Trade extends Command {
                             case "scrolls":
                                 int scrollAmount;
                                 if(currentKingdom.getSrcollsSize() - amount <= 0){
-                                    for (int i = currentKingdom.getSrcollsSize(); i >= 1; i--) {
+                                    int index;
+                                    if(currentKingdom.getSrcollsSize() > 0){
+                                        index = currentKingdom.getSrcollsSize();
+                                    } else {
+                                        index = 1;
+                                    }
+                                    for (int i = index; i >= 1; i--) {
                                         currentKingdom.setScrolls(i,false);
                                     }
                                 } else if(currentKingdom.getSrcollsSize() - amount > 0 && currentKingdom.getSrcollsSize() - amount <= 21){
                                     scrollAmount = currentKingdom.getSrcollsSize() - amount;
-                                    for (int i = currentKingdom.getSrcollsSize(); i > scrollAmount; i--) {
+                                    int index;
+                                    if(currentKingdom.getSrcollsSize() > 0){
+                                        index = currentKingdom.getSrcollsSize();
+                                    } else {
+                                        index = 1;
+                                    }
+                                    for (int i = index; i > scrollAmount; i--) {
                                         currentKingdom.setScrolls(i,false);
                                     }
                                 }
@@ -138,7 +150,13 @@ public class Trade extends Command {
                                 } else {
                                     scrollAmount = currentKingdom.getSrcollsSize() + 1;
                                 }
-                                for (int i = currentKingdom.getSrcollsSize(); i <= scrollAmount; i++) {
+                                int index;
+                                if(currentKingdom.getSrcollsSize() > 0){
+                                    index = currentKingdom.getSrcollsSize();
+                                } else {
+                                    index = 1;
+                                }
+                                for (int i = index; i <= scrollAmount; i++) {
                                     currentKingdom.setScrolls(i, true);
                                 }
                                 inventory.addItem(2, 1);

@@ -70,7 +70,9 @@ public class Get extends Command{
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
 
         try {
-
+            if(worldCommandManager.currentPosition == 1){
+                return "\nThis is your kingdom.";
+            }
             if(currentKingdom.isConquered().equals("not conquered") && currentKingdom.getBattle().equals("Battling")){
                 return "\nYou can't get resources from this kingdom while you are at war.";
             } else {
@@ -102,7 +104,13 @@ public class Get extends Command{
                             } else {
                                 scrollAmount = currentKingdom.getSrcollsSize() + availableAmount;
                             }
-                            for (int i = currentKingdom.getSrcollsSize(); i <= scrollAmount; i++) {
+                            int index;
+                            if(currentKingdom.getSrcollsSize() == 0){
+                                index = 1;
+                            } else {
+                                index = currentKingdom.getSrcollsSize();
+                            }
+                            for (int i = index; i <= scrollAmount; i++) {
                                 currentKingdom.setScrolls(i, true);
                             }
                             inventory.addItem(2, availableAmount);
@@ -155,12 +163,18 @@ public class Get extends Command{
                                 case "scrolls":
                                     int scrollAmount;
                                     if(currentKingdom.getSrcollsSize() - amount <= 0){
-                                        for (int i = currentKingdom.getSrcollsSize(); i >= 1; i--) {
+                                        int index;
+                                        if(currentKingdom.getSrcollsSize() > 0){
+                                            index = currentKingdom.getSrcollsSize();
+                                        } else {
+                                            index = 1;
+                                        }
+                                        for (int i = index; i >= 1; i--) {
                                             currentKingdom.setScrolls(i,false);
                                         }
                                     } else if(currentKingdom.getSrcollsSize() - amount > 0 && currentKingdom.getSrcollsSize() - amount <= 21){
                                         scrollAmount = currentKingdom.getSrcollsSize() - amount;
-                                        for (int i = currentKingdom.getSrcollsSize(); i > scrollAmount; i--) {
+                                        for (int i = currentKingdom.getSrcollsSize(); i >= scrollAmount; i--) {
                                             currentKingdom.setScrolls(i,false);
                                         }
                                     }
@@ -187,7 +201,13 @@ public class Get extends Command{
                                     } else {
                                         scrollAmount = currentKingdom.getSrcollsSize() + availableAmount;
                                     }
-                                    for (int i = currentKingdom.getSrcollsSize(); i <= scrollAmount; i++) {
+                                    int index;
+                                    if(currentKingdom.getSrcollsSize() > 0){
+                                        index = currentKingdom.getSrcollsSize();
+                                    } else {
+                                        index = 1;
+                                    }
+                                    for (int i = index; i <= scrollAmount; i++) {
                                         currentKingdom.setScrolls(i, true);
                                     }
                                     inventory.addItem(2, availableAmount);

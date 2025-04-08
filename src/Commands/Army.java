@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Třída Army reprezentuje armádní mechanismus ve hře.
+ * Třída army reprezentuje armádní mechanismus ve hře.
  * Umožňuje útoky na pevnosti, obranu a použití speciálních předmětů.
  */
 public class Army extends Command {
@@ -21,18 +21,20 @@ public class Army extends Command {
     private int count = 0;
     private int occupiedIndex = -1;
     private boolean defense;
+    private boolean travel;
 
     /**
-     * Konstruktor třídy Army, inicializuje pevnosti a připojí správce příkazů.
+     * Konstruktor třídy army, inicializuje pevnosti a připojí správce příkazů.
      * @param worldCommandManager Správce příkazů ve světě hry.
      */
-    public Army(CommandManager worldCommandManager, boolean defense) {
+    public Army(CommandManager worldCommandManager, boolean defense, boolean travel) {
         this.worldCommandManager = worldCommandManager;
 
         for (int i = 0; i < 3; i++) {
             fortresses.put(getCurrentKingdom().getFortressesNames(i), getCurrentKingdom().isFortressOccupied(i));
         }
         this.defense = defense;
+        this.travel = travel;
     }
 
     /**
@@ -41,6 +43,19 @@ public class Army extends Command {
      */
     @Override
     public String execute() {
+        if(travel){
+            int occupied = 0;
+            for (int i = 0; i < 3; i++) {
+                if(getCurrentKingdom().isFortressOccupied(i)){
+                    occupied++;
+                    getCurrentKingdom().setFortressesStrength(i,3);
+                    getCurrentKingdom().setArmyInFortress(i, (getMyKingdom().getMyArmy() / 3));
+                }
+            }
+            if(occupied > 0){
+                System.out.println("\nYour army and strength in your fortresses in " + getCurrentKingdom().getName() +" has been rebuilt.");
+            }
+        }
         if(defense){
             System.out.println(defenseFortress());
             return "defense";
@@ -98,18 +113,33 @@ public class Army extends Command {
                     System.out.println("\n                    " + getCurrentKingdom().getName() + " has ATTACKED your fortress " + getCurrentKingdom().getFortressesNames(fortressNumber) + ".");
                     System.out.println("                    You have to defend it.");
 
-                    if(getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) > getCurrentKingdom().getArmySize()){
+                    int use = 0;
+                    for (int i = 0; i < 2; i++) {
+                        if(getCurrentKingdom().inventoryAmount(4,"items") > 0){
+                            if(getCurrentKingdom().getFortressStrength(fortressNumber) > 1){
+                                getCurrentKingdom().setFortressesStrength(fortressNumber,getCurrentKingdom().getFortressStrength(fortressNumber)-1);
+                                getCurrentKingdom().addItems("krystals",-1,"items");
+                                use++;
+                            }
+                        }
+                    }
+                    if(use > 0){
+                        System.out.println("\n" + getCurrentKingdom().getName() + " has used " + use + " krystals and now your fortress has " + getCurrentKingdom().getFortressStrength(fortressNumber) + " strength.");
+                    }
+
+                    if((getCurrentKingdom().getArmyInFortress(fortressNumber) + getMyKingdom().getStrength()) * getCurrentKingdom().getFortressStrength(fortressNumber) > getCurrentKingdom().getArmySize()){
 
                         getCurrentKingdom().setArmyInFortress(fortressNumber,
                                 (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) - getCurrentKingdom().getArmySize()) / getCurrentKingdom().getFortressStrength(fortressNumber));
                         return "\n                    Your army has defended.\n" +
                                 "                    You have now " + getCurrentKingdom().getArmyInFortress(fortressNumber) + " in " + getCurrentKingdom().getFortressesNames(fortressNumber) + ".";
 
-                    }else if(getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) < getCurrentKingdom().getArmySize()){
+                    }else if((getCurrentKingdom().getArmyInFortress(fortressNumber) + getMyKingdom().getStrength()) * getCurrentKingdom().getFortressStrength(fortressNumber) < getCurrentKingdom().getArmySize()){
 
                         getCurrentKingdom().setFortressOccupied(fortressNumber, false);
+                        getCurrentKingdom().setFortressesStrength(fortressNumber,3);
                         getCurrentKingdom().setArmyInFortress(fortressNumber,
-                                getCurrentKingdom().getArmySize() - getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber));
+                                getCurrentKingdom().getArmySize() / 3);
 
                         return "\n                    Your army has been defeated.\n" +
                                 "                    You have lost " + getCurrentKingdom().getFortressesNames(fortressNumber) + " in " + getCurrentKingdom().getName() + ".";
@@ -165,10 +195,11 @@ public class Army extends Command {
                 getCurrentKingdom().setFortressOccupied(fortressNumber, true);
 
                 getMyKingdom().setArmy((getMyKingdom().getArmySize() - (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber))) / 3);
-                getCurrentKingdom().setArmyInFortress(fortressNumber, 0);
+                getCurrentKingdom().setArmyInFortress(fortressNumber, (getCurrentKingdom().getMyArmy() / 3));
+                getCurrentKingdom().setFortressesStrength(fortressNumber,3);
 
                 return "\nYou occupied " + getCurrentKingdom().getFortressesNames(fortressNumber) + " in " + getCurrentKingdom().getName() + ".\n"
-                        + "Your army has " + getMyKingdom().getArmySize() + " soldiers.";
+                        + "Your army has " + getMyKingdom().getArmySize() + " soldiers.\nStrength of this fortress has been reset.\nThis fortress now has " + getCurrentKingdom().getArmyInFortress(fortressNumber) + ".";
 
             } else {
                 getCurrentKingdom().setFortressOccupied(fortressNumber, false);
@@ -238,8 +269,8 @@ public class Army extends Command {
         if (conquered) {
             getCurrentKingdom().setConquered("conquered");
             getCurrentKingdom().setBattle("Not Battling");
-            getMyKingdom().setMyArmy(1000);
-            System.out.println("\nYou have conquered the entire kingdom of " + getCurrentKingdom().getName() + ".\nYour army has increased by 1000 soldiers.");
+            getMyKingdom().setMyArmy(1200);
+            System.out.println("\nYou have conquered the entire kingdom of " + getCurrentKingdom().getName() + ".\nYour army has increased by 1200 soldiers.");
         }
     }
 
