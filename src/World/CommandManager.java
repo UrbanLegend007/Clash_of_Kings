@@ -115,10 +115,10 @@ public class CommandManager {
     private void inicializace(){
         command = new HashMap<>();
         command.put("exit", new Exit());
-        command.put("res/inventory", new Inventory());
+        command.put("inventory", new Inventory());
         command.put("help", new Help());
         command.put("talk", new Talk(this));
-        command.put("army", new Army(this));
+        command.put("army", new Army(this,false));
         command.put("negotiation", new Negotiation(this));
         command.put("maintain", new Maintain(this));
         command.put("trade", new Trade(this));
@@ -163,13 +163,16 @@ public class CommandManager {
 
             try {
                 prikaz = s.nextLine().toLowerCase();
+                System.out.println("\n===========================================================================================================");
             } catch (Exception e){
                 System.out.println("Invalid input. Please enter a valid command.");
+                System.out.println("\n===========================================================================================================\n");
                 s.next();
                 return;
             }
             if(prikaz.equals("characters")){
                 showCharacters();
+                System.out.println("\n===========================================================================================================\n");
             } else if(prikaz.equals("reset")){
                 System.out.println("\nDo you really want to reset the map? Y/N");
                 System.out.print(" -> ");
@@ -180,23 +183,29 @@ public class CommandManager {
                 }
                 if(prikaz.equals("Y") || prikaz.equals("yes") || prikaz.equals("y")){
                     resetWorld();
+                    System.out.println("\n===========================================================================================================\n");
                 }else if(prikaz.equals("N") || prikaz.equals("no") || prikaz.equals("n")){
                     System.out.println("World has not been reset.");
+                    System.out.println("\n===========================================================================================================\n");
                 }else{
                     System.out.println("Invalid input. Please enter a valid command.");
+                    System.out.println("\n===========================================================================================================\n");
                 }
             } else if(prikaz.equals("scrolls")){
                 System.out.println(world.get(currentPosition).getScrolls());
+                System.out.println("\n===========================================================================================================\n");
             } else if (command.containsKey(prikaz)) {
                 System.out.println(command.get(prikaz).execute());
                 exit = command.get(prikaz).exit();
+                System.out.println("\n===========================================================================================================\n");
             } else {
                 System.out.println("Invalid command.");
+                System.out.println("\n===========================================================================================================\n");
             }
         }else{
-            System.out.println("\n\n-------------------------------------------------------------------" +
+            System.out.println("\n\n===========================================================================================================" +
                     "\n\n                        Congratulations. \n                    You have WON this game. \n\n" +
-                    "-----------------------------------------------------------------------------------------------------------");
+                    "===========================================================================================================");
             exit = true;
         }
     }
@@ -296,7 +305,9 @@ public class CommandManager {
                 myKingdom.setInventory(0,1);
                 System.out.println("\nYour army has been rebuilt.");
             }
-            return "\nYou traveled to " + world.get(currentPosition).getName() + ".";
+            System.out.println("\nYou traveled to " + world.get(currentPosition).getName() + ".");
+            new Army(this,true).execute();
+            return "";
         } else {
             return "\nYou cannot travel to " + world.get(currentPosition).getName() + ".";
         }

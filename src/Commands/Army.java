@@ -21,18 +21,20 @@ public class Army extends Command {
     private String command;
     private int count = 0;
     private int occupiedIndex = -1;
+    private boolean defense;
 
     /**
      * Konstruktor třídy Army, inicializuje pevnosti a připojí správce příkazů.
      * @param worldCommandManager Správce příkazů ve světě hry.
      */
-    public Army(CommandManager worldCommandManager) {
+    public Army(CommandManager worldCommandManager, boolean defense) {
         this.worldCommandManager = worldCommandManager;
 
         fortresses.put("main castle", false);
         fortresses.put("iron keep", false);
         fortresses.put("armyhold", false);
         setFortressesNames();
+        this.defense = defense;
     }
 
     /**
@@ -63,32 +65,36 @@ public class Army extends Command {
      */
     @Override
     public String execute() {
-        if (getCurrentKingdom().getBattle().equals("Battling") && getCurrentKingdom().isConquered().equals("not conquered")) {
-            try {
-                do {
-                    System.out.print("\nEnter command: \n1) attack \n2) use krystal \n3) exit army \n-> ");
-                    command = scanner.nextLine();
-
-                    if (command.equals("1") || command.equals("attack")) {
-                        System.out.println(attackFortress());
-                        checkIfKingdomIsConquered();
-                        System.out.println(defenseFortress());
-                    } else if (command.equals("2") || command.equals("use") || command.equals("krystal") || command.equals("use krystal")) {
-                        System.out.println(useKrystal());
-                    } else if (command.equals("3") || command.equals("exit") || command.equals("exit army")) {
-                        System.out.println();
-                    } else {
-                        System.out.println("Invalid command");
-                    }
-                } while (!(command.equals("4") || command.equals("exit") || command.equals("exit army")));
-                return "\nExiting army.";
-            } catch (Exception e) {
-                return "\nError with army.";
-            }
-        } else if(getCurrentKingdom().getBattle().equals("Not Battling") && getCurrentKingdom().isConquered().equals("not conquered")){
-            return "\nYou are not at war.";
+        if(defense){
+            System.out.println(defenseFortress());
+            return "defense";
         }else {
-            return "\nYou have already conquered this kingdom.";
+            if (getCurrentKingdom().getBattle().equals("Battling") && getCurrentKingdom().isConquered().equals("not conquered")) {
+                try {
+                    do {
+                        System.out.print("\nEnter command: \n1) attack \n2) use krystal \n3) exit army \n-> ");
+                        command = scanner.nextLine();
+
+                        if (command.equals("1") || command.equals("attack")) {
+                            System.out.println(attackFortress());
+                            checkIfKingdomIsConquered();
+                        } else if (command.equals("2") || command.equals("use") || command.equals("krystal") || command.equals("use krystal")) {
+                            System.out.println(useKrystal());
+                        } else if (command.equals("3") || command.equals("exit") || command.equals("exit army")) {
+                            System.out.println();
+                        } else {
+                            System.out.println("Invalid command");
+                        }
+                    } while (!(command.equals("4") || command.equals("exit") || command.equals("exit army")));
+                    return "\nExiting army.";
+                } catch (Exception e) {
+                    return "\nError with army.";
+                }
+            } else if(getCurrentKingdom().getBattle().equals("Not Battling") && getCurrentKingdom().isConquered().equals("not conquered")){
+                return "\nYou are not at war.";
+            }else {
+                return "\nYou have already conquered this kingdom.";
+            }
         }
     }
 
@@ -113,15 +119,15 @@ public class Army extends Command {
                     occupiedIndex = -1;
                     return "";
                 } else {
-                    System.out.println("\n" + getCurrentKingdom().getName() + " has attacked fortress " + getFortressesName(fortressNumber) + ".");
-                    System.out.println("You have to defend it.");
+                    System.out.println("\n                    " + getCurrentKingdom().getName() + " has ATTACKED your fortress " + getFortressesName(fortressNumber) + ".");
+                    System.out.println("                    You have to defend it.");
 
                     if(getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) > getCurrentKingdom().getArmySize()){
 
                         getCurrentKingdom().setArmyInFortress(fortressNumber,
                                 (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) - getCurrentKingdom().getArmySize()) / getCurrentKingdom().getFortressStrength(fortressNumber));
-                        return "\nYour army has defended.\n" +
-                                "You have now " + getCurrentKingdom().getArmyInFortress(fortressNumber) + " in " + getFortressesName(fortressNumber) + ".";
+                        return "\n                    Your army has defended.\n" +
+                                "                    You have now " + getCurrentKingdom().getArmyInFortress(fortressNumber) + " in " + getFortressesName(fortressNumber) + ".";
 
                     }else if(getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) < getCurrentKingdom().getArmySize()){
 
@@ -129,14 +135,14 @@ public class Army extends Command {
                         getCurrentKingdom().setArmyInFortress(fortressNumber,
                                 getCurrentKingdom().getArmySize() - getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber));
 
-                        return "\nYour army has been defeated.\n" +
-                                "You have lost " + getFortressesName(fortressNumber) + " in " + getCurrentKingdom().getName() + ".";
+                        return "\n                    Your army has been defeated.\n" +
+                                "                    You have lost " + getFortressesName(fortressNumber) + " in " + getCurrentKingdom().getName() + ".";
                     }else{
 
                         getCurrentKingdom().setArmyInFortress(fortressNumber,0);
-                        return "\nBoth armies have been defeated.\n" +
-                                "You still have the fortress " + getFortressesName(fortressNumber) + ".\n" +
-                                "Your army in this fortress is " + getCurrentKingdom().getArmyInFortress(fortressNumber) + ".";
+                        return "\n                    Both armies have been defeated.\n" +
+                                "                    You still have the fortress " + getFortressesName(fortressNumber) + ".\n" +
+                                "                    Your army in this fortress is " + getCurrentKingdom().getArmyInFortress(fortressNumber) + ".";
 
                     }
                 }

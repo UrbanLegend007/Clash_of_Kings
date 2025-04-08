@@ -37,7 +37,8 @@ public class Maintain extends Command {
 
                 if(inventory.getResourceAmount(1) > 0){
                     getMyKingdom().setStrength(0.1);
-                    return "\nYou maintained your properties and now your army is stronger by 0,1.";
+                    inventory.removeItem(1,1);
+                    return "\nYou used 1 resource. \nYou maintained your properties and now your army is stronger by 0,1.";
                 } else {
                     return "\nNot enough resources to maintain.";
                 }
@@ -46,7 +47,8 @@ public class Maintain extends Command {
 
                 if(inventory.getResourceAmount(3) > 0){
                     getMyKingdom().setStrength(0.2);
-                    return "\nYou maintained your gear and now your army is stronger by 0,2.";
+                    inventory.removeItem(3,1);
+                    return "\nYou used 1 metal. \nYou maintained your gear and now your army is stronger by 0,2.";
                 } else {
                     return "\nNot enough metals to maintain.";
                 }

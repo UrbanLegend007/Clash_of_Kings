@@ -25,18 +25,10 @@ public class Main {
 /*
 
 lepe ohlidat army v fortress + velikost army, kdyz dobydu fortress (misto +1000 bude +1200 aby /3 a potom se to rozdeli podle fortress, tedy +400, +400, +400)
-final fight (obsadi moje, shadow a northern kingdom)
-misto static value v get, trade atd necitat ze souboru
-ohlidat scrolls
-scrolls obsahuji get a trade info
+lepsi help
+
 menit lepe loyalty
-trade dat moznost mnozstvi, taky u get
 lepsi dialogy
 
-dodelat java docs a exeptions
-
-scrolls = info
-budu moct help kingdom
-mozne dalsi vlastnosti jako zrada atd.
-lepsi vypis
+dodelat java docs
  */

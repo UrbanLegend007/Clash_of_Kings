@@ -73,8 +73,6 @@ public class Get extends Command{
 
             if(currentKingdom.isConquered().equals("not conquered") && currentKingdom.getBattle().equals("Battling")){
                 return "\nYou can't get resources from this kingdom while you are at war.";
-            } else if(currentKingdom.isConquered().equals("conquered")){
-                return "\nThis is already your kingdom.";
             } else {
 
                 System.out.print("\nEnter resources to get (resources, scrolls, metals, krystals): ");

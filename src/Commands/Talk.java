@@ -28,9 +28,15 @@ public class Talk extends Command {
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
 
         try {
-            currentKingdom.setLoyalty(1);
+            if(currentKingdom.isConquered().equals("not conquered")){
+                currentKingdom.setLoyalty(1);
+                return currentKingdom.getDialog(worldCommandManager.currentPosition);
+            } else if(currentKingdom.isConquered().equals("conquered")){
+                return currentKingdom.getDialog(worldCommandManager.currentPosition) + "\nBut you have already conquered me.";
+            } else {
+                return "";
+            }
 
-            return currentKingdom.getDialog(worldCommandManager.currentPosition);
         } catch (Exception e) {
             return "\nDošlo k chybě při pokusu o rozhovor s královstvím: " + e.getMessage();
         }

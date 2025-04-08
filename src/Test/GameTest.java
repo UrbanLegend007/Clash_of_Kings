@@ -21,7 +21,7 @@ class GameTest {
      */
     @org.junit.jupiter.api.Test
     void reset() {
-        String input1 = "res/reset\n";
+        String input1 = "reset\n";
         String input2 = "y\n";
         String combinedInput = input1 + input2;
 
@@ -48,9 +48,9 @@ class GameTest {
      */
     @org.junit.jupiter.api.Test
     void inventory() {
-        String input1 = "res/reset\n";
+        String input1 = "reset\n";
         String input2 = "y\n";
-        String input3 = "res/inventory\n";
+        String input3 = "inventory\n";
         String combinedInput1 = input1 + input2 + input3;
 
         InputStream vstup1 = new ByteArrayInputStream(combinedInput1.getBytes());
@@ -72,7 +72,7 @@ class GameTest {
      */
     @org.junit.jupiter.api.Test
     void talk() {
-        String input1 = "res/reset\n";
+        String input1 = "reset\n";
         String input2 = "y\n";
         String input3 = "talk\n";
         String combinedInput1 = input1 + input2 + input3;
@@ -97,7 +97,7 @@ class GameTest {
      */
     @org.junit.jupiter.api.Test
     void help() {
-        String input1 = "res/reset\n";
+        String input1 = "reset\n";
         String input2 = "y\n";
         String input3 = "help\n";
         String combinedInput1 = input1 + input2 + input3;
@@ -123,7 +123,7 @@ class GameTest {
      */
     @org.junit.jupiter.api.Test
     void army() {
-        String input1 = "res/reset\n";
+        String input1 = "reset\n";
         String input2 = "y\n";
         String input3 = "army\n";
         String combinedInput1 = input1 + input2 + input3;
@@ -147,7 +147,7 @@ class GameTest {
      */
     @org.junit.jupiter.api.Test
     void characters() {
-        String input1 = "res/reset\n";
+        String input1 = "reset\n";
         String input2 = "y\n";
         String input3 = "characters\n";
         String combinedInput1 = input1 + input2 + input3;

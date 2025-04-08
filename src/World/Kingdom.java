@@ -777,10 +777,11 @@ public class Kingdom {
             System.out.println("Error checking the 'loyalty' status in the Map file.");
         }
         if(loyalty >= 10){
+            loyalty = 10;
             this.setConquered("conquered");
             this.setBattle("Not Battling");
             this.setMyArmy(1000);
-            return "\n" + this.getName() + " has loyalty " + loyalty + ".\nYou have conquered " + this.getName() + ".\nYou have conquered the entire kingdom of " + this.getName() + ".\nYour army has increased by 1000 soldiers.";
+            return "\n" + this.getName() + " has loyalty " + loyalty + ".\nYou have peacefully conquered " + this.getName() + ".\nYour army has increased by 1000 soldiers.";
         } else {
             return "";
         }
