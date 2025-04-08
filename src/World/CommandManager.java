@@ -27,6 +27,7 @@ public class CommandManager {
 
     /**
      * Konstruktor pro inicializaci CommandManageru a načítání hry.
+     * Tento konstruktor inicializuje objekty a pokusí se načíst mapu a lokaci.
      */
     public CommandManager(){
         try{
@@ -37,7 +38,7 @@ public class CommandManager {
     }
 
     /**
-     * Načítá mapu a lokaci a spustí hru.
+     * Pokusí se načíst svět a lokaci z uložených souborů a následně spustí hru.
      */
     public void loadingGame(){
         try{
@@ -141,7 +142,7 @@ public class CommandManager {
     }
 
     /**
-     * Zpracovává a vykonává příkazy zadané uživatelem.
+     * Tato metoda kontroluje příkazy, provádí příslušné akce a ukončuje hru, pokud jsou splněny podmínky.
      */
     private void runCommand(){
         int count = 0;
@@ -211,6 +212,7 @@ public class CommandManager {
     }
     /**
      * Zobrazuje seznam dostupných království, kam může hráč cestovat.
+     *
      */
     public void showBorders() {
         Kingdom currentKingdom = world.get(currentPosition);

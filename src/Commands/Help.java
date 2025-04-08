@@ -1,12 +1,14 @@
 package Commands;
 
 /**
- * Příkaz Help poskytuje hráči základní informace o cílech hry a dostupných možnostech.
+ * Příkaz {@code Help} poskytuje hráči základní informace o cílech hry a dostupných možnostech.
+ * Tento příkaz je určen pro zobrazení nápovědy, která uživateli vysvětluje mechaniky hry.
  */
 public class Help extends Command {
 
     /**
-     * Konstruktor třídy Help.
+     * Konstruktor třídy {@code Help}.
+     * Vytváří novou instanci příkazu nápovědy.
      */
     public Help() {
 
@@ -14,6 +16,9 @@ public class Help extends Command {
 
     /**
      * Vrací text s nápovědou o hře.
+     * Poskytuje informace o cílech hry, možnostech dobytí království, získávání loajality,
+     * významu svitků a možnostech interakce s královstvími.
+     *
      * @return Textový řetězec obsahující herní instrukce.
      */
     @Override
@@ -31,7 +36,8 @@ public class Help extends Command {
 
     /**
      * Určuje, zda tento příkaz ukončí běh programu.
-     * @return Vždy vrací false.
+     *
+     * @return Vždy vrací {@code false}, protože příkaz {@code Help} nikdy neukončuje hru.
      */
     @Override
     public boolean exit() {

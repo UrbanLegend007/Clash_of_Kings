@@ -21,14 +21,3 @@ public class Main {
         }
     }
 }
-
-/*
-
-lepe ohlidat army v fortress + velikost army, kdyz dobydu fortress (misto +1000 bude +1200 aby /3 a potom se to rozdeli podle fortress, tedy +400, +400, +400)
-lepsi help
-
-menit lepe loyalty
-lepsi dialogy
-
-dodelat java docs
- */

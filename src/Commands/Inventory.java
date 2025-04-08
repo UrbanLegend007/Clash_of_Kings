@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Třída Inventory spravuje inventář hráče, umožňuje zobrazování, přidávání a odebírání zdrojů.
+ * Třída {@code Inventory} spravuje inventář hráče.
+ * Umožňuje zobrazování, přidávání a odebírání zdrojů, a ukládání/načítání inventáře ze souboru.
  */
 public class Inventory extends Command {
 
@@ -18,7 +19,8 @@ public class Inventory extends Command {
     }
 
     /**
-     * Vrátí textovou reprezentaci aktuálního inventáře.
+     * Vrací textovou reprezentaci aktuálního inventáře.
+     *
      * @return Textový řetězec obsahující obsah inventáře.
      */
     @Override
@@ -28,7 +30,8 @@ public class Inventory extends Command {
 
     /**
      * Určuje, zda tento příkaz ukončí běh programu.
-     * @return Vždy vrací false.
+     *
+     * @return Vždy vrací {@code false}, protože příkaz Inventory neukončuje program.
      */
     @Override
     public boolean exit() {
@@ -36,7 +39,8 @@ public class Inventory extends Command {
     }
 
     /**
-     * Načte inventář ze souboru.
+     * Načte inventář ze souboru {@code res/inventory} a vrátí jej jako mapu.
+     *
      * @return Mapa obsahující typy a množství zdrojů v inventáři.
      */
     private HashMap<Integer, Integer> loadInventory() {
@@ -58,11 +62,12 @@ public class Inventory extends Command {
     }
 
     /**
-     * Vrátí obsah inventáře jako textový řetězec.
-     * @return Textová reprezentace inventáře.
+     * Vrátí obsah inventáře jako formátovaný textový řetězec.
+     *
+     * @return Textová reprezentace inventáře, nebo informace o chybě/prazdném inventáři.
      */
     public String showInventory() {
-        try{
+        try {
             HashMap<Integer, Integer> inventory = loadInventory();
             if (inventory.isEmpty()) {
                 return "\nYour inventory is empty.";
@@ -73,15 +78,16 @@ public class Inventory extends Command {
                 sb.append("- ").append(resourceTypes.get(key)).append(": ").append(inventory.get(key)).append("\n");
             }
             return sb.toString();
-        } catch (Exception e){
+        } catch (Exception e) {
             return "\nError getting inventory.";
         }
     }
 
     /**
-     * Vrátí množství daného zdroje v inventáři.
-     * @param resourceType Číselný identifikátor zdroje.
-     * @return Počet jednotek daného zdroje.
+     * Vrátí množství určitého typu zdroje v inventáři.
+     *
+     * @param resourceType Číselný identifikátor zdroje (1–4).
+     * @return Počet jednotek daného zdroje, nebo 0 pokud neexistuje.
      */
     public int getResourceAmount(int resourceType) {
         HashMap<Integer, Integer> inventory = loadInventory();
@@ -90,8 +96,9 @@ public class Inventory extends Command {
 
     /**
      * Přidá určitý počet jednotek daného zdroje do inventáře.
+     *
      * @param resourceType Číselný identifikátor zdroje.
-     * @param amount Počet jednotek k přidání.
+     * @param amount       Počet jednotek k přidání.
      */
     public void addItem(int resourceType, int amount) {
         HashMap<Integer, Integer> inventory = loadInventory();
@@ -101,10 +108,11 @@ public class Inventory extends Command {
 
     /**
      * Odebere určitý počet jednotek daného zdroje z inventáře.
-     * Pokud je množství menší než požadované, nastaví hodnotu na 0.
+     * Pokud je aktuální množství menší než požadované, nastaví množství na 0.
+     *
      * @param resourceType Číselný identifikátor zdroje.
-     * @param amount Počet jednotek k odebrání.
-     * @return True, pokud byla operace úspěšná.
+     * @param amount       Počet jednotek k odebrání.
+     * @return {@code true}, pokud byla operace provedena (vždy true).
      */
     public boolean removeItem(int resourceType, int amount) {
         HashMap<Integer, Integer> inventory = loadInventory();
@@ -114,15 +122,16 @@ public class Inventory extends Command {
             saveInventory(inventory);
             return true;
         } else {
-            inventory.put(resourceType, 0);
+            inventory.put(resourceType, 0); // nastaví hodnotu na 0, pokud není dostatek
             saveInventory(inventory);
             return true;
         }
     }
 
     /**
-     * Uloží aktuální inventář do souboru.
-     * @param inventory Mapa obsahující inventář.
+     * Uloží aktuální stav inventáře do souboru {@code res/inventory}.
+     *
+     * @param inventory Mapa obsahující typy zdrojů a jejich množství.
      */
     private void saveInventory(HashMap<Integer, Integer> inventory) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/inventory"))) {

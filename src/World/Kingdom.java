@@ -38,10 +38,19 @@ public class Kingdom {
             return fortressesNames[fortressIndex];
         }
     }
+
+    /**
+     * Získá počet jmen ve fortress.
+     * @return Počet jmen ve fortress.
+     */
     public int getFortressesNamesSize(){
         return fortressesNames.length;
     }
 
+    /**
+     * Získá počet scrolls, které vlastním.
+     * @return Počet scrolls.
+     */
     public int getSrcollsSize(){
         return scrolls.size();
     }
@@ -106,6 +115,9 @@ public class Kingdom {
         }
     }
 
+    /**
+     * Načte stav scrolls do souboru.
+     */
     public void loadScrolls(){
         try (BufferedReader br = new BufferedReader(new FileReader("res/scrolls"))){
             String line;
@@ -125,6 +137,9 @@ public class Kingdom {
         }
     }
 
+    /**
+     * Nastaví hodnotu scrolls a zapíše do souboru.
+     */
     public void setScrolls(int id, boolean get) {
         if(id <= 0 || id > 21){
             System.out.println("Scroll ID out of bounds: " + id);
@@ -163,6 +178,9 @@ public class Kingdom {
         this.setInventory(id, scrolls.size());
     }
 
+    /**
+     * Získá a vypíše všechny scrolls.
+     */
     public String getScrolls(){
         if(scrolls.isEmpty()){
             return "\nYou have no scrolls.";
@@ -645,6 +663,9 @@ public class Kingdom {
                 "\n - " + battle;
     }
 
+    /**
+     * Vypíše stav království.
+     */
     public String character(){
         return "\nKingdom: " + name +
                 "\nKing: " + character +
@@ -734,6 +755,9 @@ public class Kingdom {
         }
     }
 
+    /**
+     * Vrátí loyalty.
+     */
     public int getLoyalty() {
         return loyalty;
     }
@@ -785,6 +809,9 @@ public class Kingdom {
         System.out.println(this.checkLoyalty());
     }
 
+    /**
+     * Zkontroluje, jestli není loyalty 10, případně je království conquered.
+     */
     public String checkLoyalty() {
         int loyalty = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader("res/Map"))) {

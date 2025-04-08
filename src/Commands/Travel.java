@@ -1,4 +1,5 @@
 package Commands;
+
 import World.CommandManager;
 
 import java.util.Scanner;
@@ -32,12 +33,12 @@ public class Travel extends Command {
         try {
             scanner = new Scanner(System.in);
             System.out.print("\nEnter name of the kingdom: ");
-            String destination = scanner.nextLine().toLowerCase();
+            String destination = scanner.nextLine().toLowerCase(); // Uživatelský vstup pro název království
 
             // Pokusí se cestovat na požadovanou destinaci
-            return worldCommandManager.travelTo(destination);
+            return worldCommandManager.travelTo(destination); // Zavolání metody pro cestování
         } catch (Exception e) {
-            return "\nInvalid input! Please try again.";
+            return "\nInvalid input! Please try again."; // Zachycení chyby při neplatném vstupu
         }
     }
 

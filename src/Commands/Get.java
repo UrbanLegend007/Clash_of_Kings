@@ -11,10 +11,10 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * Příkaz Get umožňuje hráči získat suroviny z království,
- * a to buď obchodem, nebo pokud je království dobyto, tak bezplatně.
+ * Třída Get představuje příkaz, který umožňuje hráči získat suroviny z aktuálního království.
+ * Získání může proběhnout zdarma, pokud je království dobyté, nebo obchodem, pokud dobyté není.
  */
-public class Get extends Command{
+public class Get extends Command {
 
     private CommandManager worldCommandManager;
     private Inventory inventory = new Inventory();
@@ -23,7 +23,8 @@ public class Get extends Command{
 
     /**
      * Konstruktor třídy Get.
-     * @param worldCommandManager Správce příkazů ve hře.
+     *
+     * @param worldCommandManager správce příkazů světa, umožňující přístup ke královstvím a jejich stavům.
      */
     public Get(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
@@ -31,9 +32,10 @@ public class Get extends Command{
     }
 
     /**
-     * Vrací hodnotu potřebnou k výměně dané suroviny.
-     * @param resource Název suroviny.
-     * @return Hodnota požadované suroviny.
+     * Vrací hodnotu požadované suroviny na základě jejího názvu.
+     *
+     * @param resource název suroviny (např. "resources", "scrolls", atd.)
+     * @return hodnota požadovaná k výměně dané suroviny
      */
     private int getRequiredValue(String resource) {
         return switch (resource) {
@@ -45,6 +47,10 @@ public class Get extends Command{
         };
     }
 
+    /**
+     * Načte hodnoty jednotlivých surovin ze souboru "res/itemValues" a uloží je do mapy itemValues.
+     * Očekává se formát řádku: název,hodnota
+     */
     public void loadItemValues() {
         try (BufferedReader br = new BufferedReader(new FileReader("res/itemValues"))) {
             String line;
@@ -60,56 +66,56 @@ public class Get extends Command{
     }
 
     /**
-     * Provede příkaz získání surovin z aktuálního království.
-     * Hráč může suroviny získat zdarma, pokud království dobyl,
-     * nebo musí provést obchod, pokud království není jeho.
-     * @return Výsledek operace jako textová zpráva.
+     * Vykoná samotný příkaz získání surovin z aktuálního království.
+     * Hráč může:
+     * - Získat suroviny zdarma, pokud je království dobyto.
+     * - Nabídnout jinou surovinu k výměně, pokud království dobyté není.
+     *
+     * @return textová zpráva informující o výsledku pokusu o získání surovin.
      */
     @Override
     public String execute() {
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
 
         try {
-            if(worldCommandManager.currentPosition == 1){
+            if (worldCommandManager.currentPosition == 1) {
                 return "\nThis is your kingdom.";
             }
-            if(currentKingdom.isConquered().equals("not conquered") && currentKingdom.getBattle().equals("Battling")){
+            if (currentKingdom.isConquered().equals("not conquered") &&
+                    currentKingdom.getBattle().equals("Battling")) {
                 return "\nYou can't get resources from this kingdom while you are at war.";
             } else {
 
                 System.out.print("\nEnter resources to get (resources, scrolls, metals, krystals): ");
                 String request = scanner.nextLine();
 
-                if(currentKingdom.inventoryAmount(itemValues.get(request), "resources") <= 0){
+                if (currentKingdom.inventoryAmount(itemValues.get(request), "resources") <= 0) {
                     return "\nThis kingdom has no " + request + " to trade.";
-                } else if(!itemValues.containsKey(request)){
+                } else if (!itemValues.containsKey(request)) {
                     return "\nThere in not any " + request + " in this kingdom.";
                 }
 
                 int availableAmount = currentKingdom.inventoryAmount(itemValues.get(request), "resources");
 
-                if(currentKingdom.isConquered().equals("conquered")) {
+                if (currentKingdom.isConquered().equals("conquered")) {
+                    // Hráč získává všechny suroviny zdarma (dobyto)
                     currentKingdom.collectItems(request, availableAmount, "resources");
 
-                    switch(request){
+                    switch (request) {
                         case "resources":
                             inventory.addItem(1, availableAmount);
                             break;
                         case "scrolls":
+                            // Ošetření kapacity svitků
                             int scrollAmount;
-                            if(currentKingdom.getSrcollsSize() + availableAmount > 21){
+                            if (currentKingdom.getSrcollsSize() + availableAmount > 21) {
                                 scrollAmount = 21;
-                            } else if(currentKingdom.getSrcollsSize() + availableAmount <= 0){
+                            } else if (currentKingdom.getSrcollsSize() + availableAmount <= 0) {
                                 scrollAmount = currentKingdom.getSrcollsSize();
                             } else {
                                 scrollAmount = currentKingdom.getSrcollsSize() + availableAmount;
                             }
-                            int index;
-                            if(currentKingdom.getSrcollsSize() == 0){
-                                index = 1;
-                            } else {
-                                index = currentKingdom.getSrcollsSize();
-                            }
+                            int index = currentKingdom.getSrcollsSize() == 0 ? 1 : currentKingdom.getSrcollsSize();
                             for (int i = index; i <= scrollAmount; i++) {
                                 currentKingdom.setScrolls(i, true);
                             }
@@ -125,7 +131,9 @@ public class Get extends Command{
 
                     return "\nYou have collected all " + availableAmount + " " + request + ".";
 
-                } else if(currentKingdom.isConquered().equals("not conquered") && currentKingdom.getBattle().equals("Not Battling")){
+                } else if (currentKingdom.isConquered().equals("not conquered") &&
+                        currentKingdom.getBattle().equals("Not Battling")) {
+                    // Hráč obchoduje – nabízí vlastní surovinu na výměnu
                     System.out.print("\nEnter what you offer (resources, scrolls, metals, krystals): ");
                     String offeredItem = scanner.nextLine();
 
@@ -135,47 +143,42 @@ public class Get extends Command{
 
                     int offerValue = itemValues.get(offeredItem);
 
-                    if (inventory.getResourceAmount(offerValue) > 0){
-
+                    if (inventory.getResourceAmount(offerValue) > 0) {
                         System.out.println("\nEnter the amount you would like to offer: ");
                         int amount;
-                        try{
+                        try {
                             amount = scanner.nextInt();
-                        } catch (Exception e){
+                        } catch (Exception e) {
                             return "\nInvalid amount.";
                         }
 
-                        if(amount <= 0){
+                        if (amount <= 0) {
                             return "\nYou can't offer that amount.";
-                        } else if(amount > inventory.getResourceAmount(offerValue)){
+                        } else if (amount > inventory.getResourceAmount(offerValue)) {
                             return "\nYou don't have that amount.";
                         }
 
                         int requiredValue = getRequiredValue(request);
 
                         if (offerValue * amount >= requiredValue) {
+                            // Výmena je přijata – provedou se úpravy obou inventářů
                             currentKingdom.collectItems(request, availableAmount, "resources");
-                            currentKingdom.addItems(offeredItem,amount, "items");
-                            switch(offeredItem){
+                            currentKingdom.addItems(offeredItem, amount, "items");
+
+                            switch (offeredItem) {
                                 case "resources":
                                     inventory.removeItem(1, amount);
                                     break;
                                 case "scrolls":
-                                    int scrollAmount;
-                                    if(currentKingdom.getSrcollsSize() - amount <= 0){
-                                        int index;
-                                        if(currentKingdom.getSrcollsSize() > 0){
-                                            index = currentKingdom.getSrcollsSize();
-                                        } else {
-                                            index = 1;
-                                        }
+                                    if (currentKingdom.getSrcollsSize() - amount <= 0) {
+                                        int index = currentKingdom.getSrcollsSize() > 0 ? currentKingdom.getSrcollsSize() : 1;
                                         for (int i = index; i >= 1; i--) {
-                                            currentKingdom.setScrolls(i,false);
+                                            currentKingdom.setScrolls(i, false);
                                         }
-                                    } else if(currentKingdom.getSrcollsSize() - amount > 0 && currentKingdom.getSrcollsSize() - amount <= 21){
-                                        scrollAmount = currentKingdom.getSrcollsSize() - amount;
+                                    } else {
+                                        int scrollAmount = currentKingdom.getSrcollsSize() - amount;
                                         for (int i = currentKingdom.getSrcollsSize(); i >= scrollAmount; i--) {
-                                            currentKingdom.setScrolls(i,false);
+                                            currentKingdom.setScrolls(i, false);
                                         }
                                     }
                                     inventory.removeItem(2, amount);
@@ -187,26 +190,21 @@ public class Get extends Command{
                                     inventory.removeItem(4, amount);
                                     break;
                             }
-                            switch(request){
+
+                            switch (request) {
                                 case "resources":
                                     inventory.addItem(1, availableAmount);
                                     break;
                                 case "scrolls":
                                     int scrollAmount;
-
-                                    if(currentKingdom.getSrcollsSize() + availableAmount > 21){
+                                    if (currentKingdom.getSrcollsSize() + availableAmount > 21) {
                                         scrollAmount = 21;
-                                    } else if(currentKingdom.getSrcollsSize() + availableAmount <= 0){
+                                    } else if (currentKingdom.getSrcollsSize() + availableAmount <= 0) {
                                         scrollAmount = currentKingdom.getSrcollsSize();
                                     } else {
                                         scrollAmount = currentKingdom.getSrcollsSize() + availableAmount;
                                     }
-                                    int index;
-                                    if(currentKingdom.getSrcollsSize() > 0){
-                                        index = currentKingdom.getSrcollsSize();
-                                    } else {
-                                        index = 1;
-                                    }
+                                    int index = currentKingdom.getSrcollsSize() > 0 ? currentKingdom.getSrcollsSize() : 1;
                                     for (int i = index; i <= scrollAmount; i++) {
                                         currentKingdom.setScrolls(i, true);
                                     }
@@ -219,14 +217,15 @@ public class Get extends Command{
                                     inventory.addItem(4, availableAmount);
                                     break;
                             }
+
                             currentKingdom.setLoyalty(1);
                             return "\nOffer accepted. You traded 1 " + offeredItem + ".\nYou have collected all " + availableAmount + " " + request + ".";
+
                         } else {
                             return "\nTrade rejected. Your offer was too low.";
                         }
                     } else {
                         return "\nYou don't have any " + offeredItem + ".";
-
                     }
                 } else {
                     return "\nError while getting items.";
@@ -241,8 +240,9 @@ public class Get extends Command{
     }
 
     /**
-     * Určuje, zda tento příkaz má ukončit běh.
-     * @return Vždy vrací false.
+     * Určuje, zda tento příkaz ukončuje běh hry.
+     *
+     * @return vždy vrací false (příkaz Get hru neukončuje).
      */
     @Override
     public boolean exit() {

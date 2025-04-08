@@ -10,8 +10,9 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- * Třída pro obchodování s královstvím.
- * Umožňuje hráči vyměňovat různé druhy zboží s královstvím.
+ * Třída {@code Trade} umožňuje obchodování s královstvím. Hráč může nabídnout
+ * určité zboží a získat za něj jiné. Obchodování je možné pouze, pokud
+ * království není v konfliktu nebo již dobyté.
  */
 public class Trade extends Command {
 
@@ -22,6 +23,10 @@ public class Trade extends Command {
 
     /**
      * Konstruktor pro vytvoření příkazu pro obchodování.
+     * Tento příkaz inicializuje správce příkazů {@code worldCommandManager},
+     * který umožňuje správu světa a pozic hráče, a také načte hodnoty zboží
+     * pro obchodování.
+     *
      * @param worldCommandManager Instance CommandManager pro správu světa a pozic.
      */
     public Trade(CommandManager worldCommandManager) {
@@ -30,16 +35,22 @@ public class Trade extends Command {
     }
 
     /**
-     * Provede obchodování s aktuálním královstvím.
-     * Hráč může nabídnout určité zboží a získat za něj jiné.
-     * @return Výstupní zpráva o probíhajícím obchodu a výsledku.
+     * Provede obchodování s aktuálním královstvím. Hráč může nabídnout
+     * určité zboží a získat za něj jiné. Vrací zprávu o probíhajícím obchodu
+     * a jeho výsledku.
+     *
+     * Obchodování je možné pouze, pokud království není v konfliktu a
+     * není již dobyté. Hráč zadává zboží, které chce získat a nabídnout
+     * na výměnu. Pokud je nabídka splněna, dojde k výměně zboží a zvýšení
+     * loajality království.
+     *
+     * @return Výstupní zpráva o výsledku obchodu.
      */
     @Override
     public String execute() {
         Kingdom currentKingdom = worldCommandManager.world.get(worldCommandManager.currentPosition);
 
         try {
-
             // Kontrola, zda je království v konfliktu nebo již dobyté
             if(currentKingdom.isConquered().equals("not conquered") && currentKingdom.getBattle().equals("Battling")){
                 return "\nYou can't trade with this kingdom while you are at war.";
@@ -55,7 +66,7 @@ public class Trade extends Command {
                 if(currentKingdom.inventoryAmount(itemValues.get(request), "items") <= 0){
                     return "\nThis kingdom has no " + request + " to trade.";
                 } else if(!itemValues.containsKey(request)){
-                    return "\nThere in not any " + request + " in this kingdom.";
+                    return "\nThere is no " + request + " in this kingdom.";
                 }
 
                 int availableAmount = currentKingdom.inventoryAmount(itemValues.get(request), "items");
@@ -99,6 +110,8 @@ public class Trade extends Command {
                         // Provádí výměnu zboží
                         currentKingdom.collectItems(request, 1, "items");
                         currentKingdom.addItems(offeredItem, amount, "items");
+
+                        // Odstraňuje položky z inventáře na základě nabídky
                         switch(offeredItem){
                             case "resources":
                                 inventory.removeItem(1, amount);
@@ -136,6 +149,8 @@ public class Trade extends Command {
                                 inventory.removeItem(4, amount);
                                 break;
                         }
+
+                        // Přidává nové položky na základě požadavku
                         switch(request){
                             case "resources":
                                 inventory.addItem(1, 1);
@@ -168,6 +183,7 @@ public class Trade extends Command {
                                 inventory.addItem(4, 1);
                                 break;
                         }
+
                         // Zvýšení loajality království
                         currentKingdom.setLoyalty(1);
                         return "\nOffer accepted. You traded 1 " + offeredItem + ".\nYou have collected 1 " + request + ".";
@@ -177,19 +193,22 @@ public class Trade extends Command {
                     }
 
                 } else {
-                    return "\nYou don't have any " + offeredItem + ".";
+                    return "\nYou don't have any " + offeredItem + ".";  // Pokud hráč nemá dostatek nabídnutého zboží
                 }
 
             } else {
-                return "\nError while trading.";
+                return "\nError while trading.";  // V případě, že obchodování není možné
             }
         } catch (Exception e) {
-            return "\nAn error occurred while trading.";
+            return "\nAn error occurred while trading.";  // Zachycení výjimek během obchodování
         }
     }
 
     /**
      * Získá požadovanou hodnotu pro konkrétní druh zboží.
+     * Tato metoda vrací hodnotu podle typu zboží, jako jsou "resources",
+     * "scrolls", "metals" nebo "krystals".
+     *
      * @param resource Název zboží, pro které se získává požadovaná hodnota.
      * @return Požadovaná hodnota pro obchod.
      */
@@ -203,23 +222,30 @@ public class Trade extends Command {
         };
     }
 
+    /**
+     * Načte hodnoty zboží pro obchodování ze souboru.
+     * Tento soubor musí obsahovat hodnoty pro jednotlivé druhy zboží,
+     * které jsou načteny do statického HashMap.
+     */
     public void loadItemValues() {
         try (BufferedReader br = new BufferedReader(new FileReader("res/itemValues"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                itemValues.put(parts[0], Integer.parseInt(parts[1]));
+                itemValues.put(parts[0], Integer.parseInt(parts[1]));  // Načítání zboží do mapy
             }
         } catch (IOException e) {
-            System.out.println("Error loading item values from file.");
+            System.out.println("Error loading item values from file.");  // Chyba při načítání souboru
         } catch (Exception e) {
-            System.out.println("Error loading item values.");
+            System.out.println("Error loading item values.");  // Obecná chyba
         }
     }
 
     /**
-     * Určuje, zda příkaz způsobí ukončení hry nebo operace.
-     * @return false, protože tento příkaz neukončuje hru.
+     * Určuje, zda tento příkaz způsobí ukončení hry nebo operace.
+     * Tento příkaz {@code Trade} nikdy neukončí program, vždy vrací {@code false}.
+     *
+     * @return Vždy vrací {@code false}, protože tento příkaz neukončuje hru.
      */
     @Override
     public boolean exit() {

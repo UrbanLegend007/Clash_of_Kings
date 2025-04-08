@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Třída army reprezentuje armádní mechanismus ve hře.
+ * Třída Army reprezentuje armádní mechanismus ve hře.
  * Umožňuje útoky na pevnosti, obranu a použití speciálních předmětů.
  */
 public class Army extends Command {
@@ -24,8 +24,10 @@ public class Army extends Command {
     private boolean travel;
 
     /**
-     * Konstruktor třídy army, inicializuje pevnosti a připojí správce příkazů.
+     * Konstruktor třídy Army, inicializuje pevnosti a připojí správce příkazů.
      * @param worldCommandManager Správce příkazů ve světě hry.
+     * @param defense Příznak, zda se má provést obrana pevnosti.
+     * @param travel Příznak, zda došlo k přesunu mezi královstvími.
      */
     public Army(CommandManager worldCommandManager, boolean defense, boolean travel) {
         this.worldCommandManager = worldCommandManager;
@@ -113,6 +115,7 @@ public class Army extends Command {
                     System.out.println("\n                    " + getCurrentKingdom().getName() + " has ATTACKED your fortress " + getCurrentKingdom().getFortressesNames(fortressNumber) + ".");
                     System.out.println("                    You have to defend it.");
 
+                    // Spotřeba krystalů k posílení obrany pevnosti
                     int use = 0;
                     for (int i = 0; i < 2; i++) {
                         if(getCurrentKingdom().inventoryAmount(4,"items") > 0){
@@ -127,13 +130,14 @@ public class Army extends Command {
                         System.out.println("\n" + getCurrentKingdom().getName() + " has used " + use + " krystals and now your fortress has " + getCurrentKingdom().getFortressStrength(fortressNumber) + " strength.");
                     }
 
+                    // Výsledky bitvy - obránci vyhráli
                     if((getCurrentKingdom().getArmyInFortress(fortressNumber) + getMyKingdom().getStrength()) * getCurrentKingdom().getFortressStrength(fortressNumber) > getCurrentKingdom().getArmySize()){
-
                         getCurrentKingdom().setArmyInFortress(fortressNumber,
                                 (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) - getCurrentKingdom().getArmySize()) / getCurrentKingdom().getFortressStrength(fortressNumber));
                         return "\n                    Your army has defended.\n" +
                                 "                    You have now " + getCurrentKingdom().getArmyInFortress(fortressNumber) + " in " + getCurrentKingdom().getFortressesNames(fortressNumber) + ".";
 
+                        // Výsledek - obránci prohráli
                     }else if((getCurrentKingdom().getArmyInFortress(fortressNumber) + getMyKingdom().getStrength()) * getCurrentKingdom().getFortressStrength(fortressNumber) < getCurrentKingdom().getArmySize()){
 
                         getCurrentKingdom().setFortressOccupied(fortressNumber, false);
@@ -143,13 +147,13 @@ public class Army extends Command {
 
                         return "\n                    Your army has been defeated.\n" +
                                 "                    You have lost " + getCurrentKingdom().getFortressesNames(fortressNumber) + " in " + getCurrentKingdom().getName() + ".";
-                    }else{
 
+                        // Remíza - obě armády zničeny
+                    }else{
                         getCurrentKingdom().setArmyInFortress(fortressNumber,0);
                         return "\n                    Both armies have been defeated.\n" +
                                 "                    You still have the fortress " + getCurrentKingdom().getFortressesNames(fortressNumber) + ".\n" +
                                 "                    Your army in this fortress is " + getCurrentKingdom().getArmyInFortress(fortressNumber) + ".";
-
                     }
                 }
             } else {
@@ -182,6 +186,7 @@ public class Army extends Command {
                 return "\nThis fortress is already yours.";
             }
 
+            // Výpočet výsledku útoku
             if (getCurrentKingdom().getArmyInFortress(fortressNumber) * getCurrentKingdom().getFortressStrength(fortressNumber) > getMyKingdom().getArmySize() + getMyKingdom().getStrength()) {
                 getCurrentKingdom().setFortressOccupied(fortressNumber, false);
 
@@ -241,7 +246,7 @@ public class Army extends Command {
 
                 if(getCurrentKingdom().getFortressStrength(fortressNumber) <= 1) {
                     return "\nYou cannot use more krystals on this fortress.";
-                }else{
+                } else {
                     if(inventory.getResourceAmount(4) > 0){
                         getCurrentKingdom().setFortressesStrength(fortressNumber, getCurrentKingdom().getFortressStrength(fortressNumber)-1);
                         inventory.removeItem(4, 1);
@@ -257,7 +262,7 @@ public class Army extends Command {
     }
 
     /**
-     * Kontroluje, zda bylo království dobyto.
+     * Kontroluje, zda byly všechny pevnosti v království dobyty.
      */
     private void checkIfKingdomIsConquered() {
         boolean conquered = true;
@@ -275,7 +280,7 @@ public class Army extends Command {
     }
 
     /**
-     * Kontroluje, které pevnosti jsou obsazené.
+     * Zkontroluje pevnosti, které nejsou obsazeny.
      */
     private void checkFortress() {
         count = 0;
@@ -288,17 +293,7 @@ public class Army extends Command {
         for (int i = 0; i < 3; i++) {
             if (!getCurrentKingdom().isFortressOccupied(i)) {
                 count++;
-                switch (i) {
-                    case 0:
-                        System.out.println("1) " + getCurrentKingdom().getFortressesNames(i));
-                        break;
-                    case 1:
-                        System.out.println("2) " + getCurrentKingdom().getFortressesNames(i));
-                        break;
-                    case 2:
-                        System.out.println("3) " + getCurrentKingdom().getFortressesNames(i));
-                        break;
-                }
+                System.out.println((i+1) + ") " + getCurrentKingdom().getFortressesNames(i));
             }
         }
     }
@@ -312,7 +307,7 @@ public class Army extends Command {
     }
 
     /**
-     * Získá hráčovo vlastní království.
+     * Získá hráčovo výchozí království.
      * @return Hráčovo království.
      */
     private Kingdom getMyKingdom() {
@@ -323,7 +318,6 @@ public class Army extends Command {
      * Ukončí armádní operace.
      * @return Vždy vrací false.
      */
-
     @Override
     public boolean exit() {
         return false;
