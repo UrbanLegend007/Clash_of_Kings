@@ -756,6 +756,34 @@ public class Kingdom {
         } catch (Exception e) {
             System.out.println("Error updating the 'loyalty' status in the Map file.");
         }
+        System.out.println(this.checkLoyalty());
+    }
+
+    public String checkLoyalty() {
+        int loyalty = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader("res/Map"))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                int kingdomID = Integer.parseInt(parts[0]);
+
+                if (kingdomID == this.ID) {
+                    loyalty = Integer.parseInt(parts[parts.length-2]);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error checking the 'loyalty' status in the Map file.");
+        }
+        if(loyalty >= 10){
+            this.setConquered("conquered");
+            this.setBattle("Not Battling");
+            this.setMyArmy(1000);
+            return "\n" + this.getName() + " has loyalty " + loyalty + ".\nYou have conquered " + this.getName() + ".\nYou have conquered the entire kingdom of " + this.getName() + ".\nYour army has increased by 1000 soldiers.";
+        } else {
+            return "";
+        }
     }
 
     /**

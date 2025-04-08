@@ -2,6 +2,10 @@ package Commands;
 
 import World.CommandManager;
 import World.Kingdom;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -12,9 +16,9 @@ import java.util.Scanner;
 public class Trade extends Command {
 
     private CommandManager worldCommandManager;
-    private static final HashMap<String, Integer> itemValues = new HashMap<>();
     private Inventory inventory = new Inventory();
     private Scanner scanner = new Scanner(System.in);
+    private static final HashMap<String, Integer> itemValues = new HashMap<>();
 
     /**
      * Konstruktor pro vytvoření příkazu pro obchodování.
@@ -22,13 +26,7 @@ public class Trade extends Command {
      */
     public Trade(CommandManager worldCommandManager) {
         this.worldCommandManager = worldCommandManager;
-    }
-
-    static {
-        itemValues.put("resources", 1);
-        itemValues.put("scrolls", 2);
-        itemValues.put("metals", 3);
-        itemValues.put("krystals", 4);
+        loadItemValues();
     }
 
     /**
@@ -80,25 +78,50 @@ public class Trade extends Command {
                 // Ověření, zda má hráč dostatečné množství nabídnutého zboží
                 if (inventory.getResourceAmount(offerValue) > 0){
 
+                    System.out.println("\nEnter the amount you would like to offer: ");
+                    int amount;
+                    try{
+                        amount = scanner.nextInt();
+                    } catch (Exception e){
+                        return "\nInvalid amount.";
+                    }
+
+                    if(amount <= 0){
+                        return "\nYou can't offer that amount.";
+                    } else if(amount > inventory.getResourceAmount(offerValue)){
+                        return "\nYou don't have that amount.";
+                    }
+
                     int requiredValue = getRequiredValue(request);
 
                     // Ověření, zda nabídka splňuje požadavky
-                    if (offerValue >= requiredValue) {
+                    if (offerValue * amount >= requiredValue) {
                         // Provádí výměnu zboží
                         currentKingdom.collectItems(request, 1, "items");
-                        currentKingdom.addItems(offeredItem, 1, "items");
+                        currentKingdom.addItems(offeredItem, amount, "items");
                         switch(offeredItem){
                             case "resources":
-                                inventory.removeItem(1, 1);
+                                inventory.removeItem(1, amount);
                                 break;
                             case "scrolls":
-                                inventory.removeItem(2, 1);
+                                int scrollAmount;
+                                if(currentKingdom.getSrcollsSize() - amount <= 0){
+                                    for (int i = currentKingdom.getSrcollsSize(); i >= 1; i--) {
+                                        currentKingdom.setScrolls(i,false);
+                                    }
+                                } else if(currentKingdom.getSrcollsSize() - amount > 0 && currentKingdom.getSrcollsSize() - amount <= 21){
+                                    scrollAmount = currentKingdom.getSrcollsSize() - amount;
+                                    for (int i = currentKingdom.getSrcollsSize(); i > scrollAmount; i--) {
+                                        currentKingdom.setScrolls(i,false);
+                                    }
+                                }
+                                inventory.removeItem(2, amount);
                                 break;
                             case "metals":
-                                inventory.removeItem(3, 1);
+                                inventory.removeItem(3, amount);
                                 break;
                             case "krystals":
-                                inventory.removeItem(4, 1);
+                                inventory.removeItem(4, amount);
                                 break;
                         }
                         switch(request){
@@ -106,6 +129,18 @@ public class Trade extends Command {
                                 inventory.addItem(1, 1);
                                 break;
                             case "scrolls":
+                                int scrollAmount;
+
+                                if(currentKingdom.getSrcollsSize() + 1 > 21){
+                                    scrollAmount = 21;
+                                } else if(currentKingdom.getSrcollsSize() + 1 <= 0){
+                                    scrollAmount = currentKingdom.getSrcollsSize();
+                                } else {
+                                    scrollAmount = currentKingdom.getSrcollsSize() + 1;
+                                }
+                                for (int i = currentKingdom.getSrcollsSize(); i <= scrollAmount; i++) {
+                                    currentKingdom.setScrolls(i, true);
+                                }
                                 inventory.addItem(2, 1);
                                 break;
                             case "metals":
@@ -141,12 +176,26 @@ public class Trade extends Command {
      * @return Požadovaná hodnota pro obchod.
      */
     private int getRequiredValue(String resource) {
-        switch (resource) {
-            case "resources": return 1;
-            case "scrolls": return 2;
-            case "metals": return 3;
-            case "krystals": return 4;
-            default: return 1;
+        return switch (resource) {
+            case "resources" -> itemValues.get("resources");
+            case "scrolls" -> itemValues.get("scrolls");
+            case "metals" -> itemValues.get("metals");
+            case "krystals" -> itemValues.get("krystals");
+            default -> 1;
+        };
+    }
+
+    public void loadItemValues() {
+        try (BufferedReader br = new BufferedReader(new FileReader("res/itemValues"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                itemValues.put(parts[0], Integer.parseInt(parts[1]));
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading item values from file.");
+        } catch (Exception e) {
+            System.out.println("Error loading item values.");
         }
     }
 

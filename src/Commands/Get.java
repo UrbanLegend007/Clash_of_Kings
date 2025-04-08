@@ -132,7 +132,7 @@ public class Get extends Command{
                     if (inventory.getResourceAmount(offerValue) > 0){
 
                         System.out.println("\nEnter the amount you would like to offer: ");
-                        int amount = 1;
+                        int amount;
                         try{
                             amount = scanner.nextInt();
                         } catch (Exception e){
@@ -149,10 +149,10 @@ public class Get extends Command{
 
                         if (offerValue * amount >= requiredValue) {
                             currentKingdom.collectItems(request, availableAmount, "resources");
+                            currentKingdom.addItems(offeredItem,amount, "items");
                             switch(offeredItem){
                                 case "resources":
                                     inventory.removeItem(1, amount);
-                                    currentKingdom.addItems(offeredItem,amount, "items");
                                     break;
                                 case "scrolls":
                                     int scrollAmount;
@@ -167,15 +167,12 @@ public class Get extends Command{
                                         }
                                     }
                                     inventory.removeItem(2, amount);
-                                    currentKingdom.addItems(offeredItem,amount, "items");
                                     break;
                                 case "metals":
                                     inventory.removeItem(3, amount);
-                                    currentKingdom.addItems(offeredItem,amount, "items");
                                     break;
                                 case "krystals":
                                     inventory.removeItem(4, amount);
-                                    currentKingdom.addItems(offeredItem,amount, "items");
                                     break;
                             }
                             switch(request){
@@ -184,6 +181,7 @@ public class Get extends Command{
                                     break;
                                 case "scrolls":
                                     int scrollAmount;
+
                                     if(currentKingdom.getSrcollsSize() + availableAmount > 21){
                                         scrollAmount = 21;
                                     } else if(currentKingdom.getSrcollsSize() + availableAmount <= 0){
