@@ -368,14 +368,14 @@ public class CommandManager {
             System.out.println("Error resetting world.");
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("res/fortress"))){
-            bw.write("1,true,true,true,3,3,3\n" +
-                    "2,false,false,false,3,3,3\n" +
-                    "3,false,false,false,3,3,3\n" +
-                    "4,false,false,false,3,3,3\n" +
-                    "5,false,false,false,3,3,3\n" +
-                    "6,false,false,false,3,3,3\n" +
-                    "7,false,false,false,3,3,3\n" +
-                    "8,false,false,false,3,3,3");
+            bw.write("1,true,true,true,3,3,3,Main Castle,Iron Keep,Armyhold\n" +
+                    "2,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold\n" +
+                    "3,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold\n" +
+                    "4,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold\n" +
+                    "5,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold\n" +
+                    "6,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold\n" +
+                    "7,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold\n" +
+                    "8,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold");
         } catch (Exception e){
             System.out.println("Error resetting world.");
         }

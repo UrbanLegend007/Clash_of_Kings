@@ -1,8 +1,8 @@
-1,true,true,true,3,3,3
-2,false,false,false,3,3,3
-3,false,false,false,3,3,3
-4,false,false,false,3,3,1
-5,false,false,false,3,3,3
-6,false,false,false,3,3,3
-7,false,false,false,3,3,3
-8,false,false,false,3,3,3
+1,true,true,true,3,3,3,Main Castle,Iron Keep,Armyhold
+2,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold
+3,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold
+4,false,false,false,3,2,1,Main Castle,Iron Keep,Armyhold
+5,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold
+6,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold
+7,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold
+8,false,false,false,3,3,3,Main Castle,Iron Keep,Armyhold

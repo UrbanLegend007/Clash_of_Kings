@@ -24,6 +24,23 @@ public class Kingdom {
     private boolean[] fortressesOccupied = new boolean[3];
     private HashMap<Integer, String> scrolls = new HashMap<>();
     private int[] fortressesStrength = new int[3];
+    private String[] fortressesNames = new String[3];
+
+    /**
+     * Získá název pevnosti podle indexu.
+     * @param fortressIndex Index pevnosti.
+     * @return Název pevnosti nebo zpráva o špatném indexu.
+     */
+    public String getFortressesNames(int fortressIndex) {
+        if (fortressIndex < 0 || fortressIndex >= fortressesOccupied.length) {
+            return "Wrong index for fortresses.";
+        } else {
+            return fortressesNames[fortressIndex];
+        }
+    }
+    public int getFortressesNamesSize(){
+        return fortressesNames.length;
+    }
 
     public int getSrcollsSize(){
         return scrolls.size();
@@ -75,6 +92,9 @@ public class Kingdom {
                     }
                     for (int i = 0; i < 3; i++) {
                         fortressesStrength[i] = Integer.parseInt(parts[i + 4]);
+                    }
+                    for (int i = 0; i < 3; i++) {
+                        fortressesNames[i] = parts[i + 7];
                     }
                     break;
                 }
@@ -180,6 +200,9 @@ public class Kingdom {
                     for (int i = 0; i < 3; i++) {
                         newLine.append(",").append(fortressesStrength[i]);
                     }
+                    for (int i = 0; i < 3; i++) {
+                        newLine.append(",").append(fortressesNames[i]);
+                    }
                     lines.add(newLine.toString());
                     updated = true;
                 } else {
@@ -195,6 +218,9 @@ public class Kingdom {
                 }
                 for (int i = 0; i < 3; i++) {
                     newLine.append(",").append(fortressesStrength[i]);
+                }
+                for (int i = 0; i < 3; i++) {
+                    newLine.append(",").append(fortressesNames[i]);
                 }
                 lines.add(newLine.toString());
             }
